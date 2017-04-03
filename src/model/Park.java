@@ -19,13 +19,19 @@ public class Park extends Building {
 		this.upgradeTable = upgradeTable;
 	}
 
-	// TODO benötigt anderes Gebäude
+	// TODO benï¿½tigt anderes Gebï¿½ude
 	// TODO Test Ressourcen abziehen
 
 	@Override
 	public boolean upgrade() {
 		level = level.nextLevel();
 		return false;
+	}
+
+	@Override
+	public void calculateOutput(Storage lager) {
+		// TODO Auto-generated method stub
+
 	}
 
 }

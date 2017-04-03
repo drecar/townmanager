@@ -1,19 +1,18 @@
 package model;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public abstract class Building {
+
 	private int zustand;
-//	protected BuildingCosts buildingCosts = new BuildingCosts();
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
 	protected Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
+	protected Set<Worker> workers = new HashSet<>();
 
 	public abstract boolean upgrade();
-
-//	public BuildingCosts getBuildingCosts() {
-//		return buildingCosts;
-//	}
 
 	public UpgradeLevel getUpgradeLevel() {
 		return level;
@@ -26,6 +25,12 @@ public abstract class Building {
 		
 		return new BuildingCosts();
 		
+	}
+
+	public abstract void calculateOutput(Storage lager);
+
+	public Set<Worker> getWorkers() {
+		return workers;
 	}
 
 }

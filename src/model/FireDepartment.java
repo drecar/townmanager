@@ -30,4 +30,10 @@ public class FireDepartment extends Building {
 		return true;
 	}
 
+	@Override
+	public void calculateOutput(Storage lager) {
+		// TODO Auto-generated method stub
+
+	}
+
 }

@@ -7,6 +7,8 @@ public class Town {
 	private String name = "Utopia";
 	private Storage storage = new Storage();
 	private List<Building> buildings= new ArrayList<>();
+	private List<Worker> worker = new ArrayList<>();
+
 	public String getName() {
 		return name;
 	}

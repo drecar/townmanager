@@ -6,6 +6,7 @@ import model.FireDepartment;
 import model.Storage;
 import model.Town;
 import model.UpgradeLevel;
+import model.Worker;
 
 public class TownManager {
 	private Town town;
@@ -17,9 +18,27 @@ public class TownManager {
 
 	public void calculateTurn() {
 		Storage lager = town.getStorage();
+		calculateBasics(lager);
+		calculateRessourcesFromBuildings(lager);
+	}
+
+	private void calculateRessourcesFromBuildings(Storage lager) {
+		town.getBuildings().stream().forEach(building -> {
+			building.calculateOutput(lager);
+		});
+		
+	}
+
+	private void calculateBasics(Storage lager) {
 		lager.setFood(lager.getFood() + 10);
 		lager.setWood(lager.getWood() + 10);
 		lager.setStone(lager.getStone() + 10);
+	}
+
+
+	public void addWorkerToBuilding(Building building, Worker worker) {
+
+		building.getWorkers().add(worker);
 	}
 
 	public boolean createFireDepartment() {
@@ -27,7 +46,7 @@ public class TownManager {
 
 		if (checkAndRemoveFromStorage(headquater.getUpgradeCosts(UpgradeLevel.NOT_BUILT))) {
 			town.getBuildings().add(headquater);
-			System.out.println("Firedepartment hinzugefügt.");
+			System.out.println("Firedepartment hinzugefï¿½gt.");
 			return true;
 		} else {
 			System.out
