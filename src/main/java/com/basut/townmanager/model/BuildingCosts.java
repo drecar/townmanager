@@ -1,28 +1,18 @@
 package com.basut.townmanager.model;
 
+import lombok.Getter;
+import lombok.Setter;
+
+@Getter
+@Setter
 public class BuildingCosts {
 	private int wood;
 	private int stone;
 	private int food;
-	
-	public int getWood() {
-		return wood;
+
+	public void addBuildingCosts(BuildingCosts ressources) {
+		this.wood += ressources.getWood();
+		this.stone += ressources.getStone();
+		this.food += ressources.getFood();
 	}
-	public void setWood(int wood) {
-		this.wood = wood;
-	}
-	public int getStone() {
-		return stone;
-	}
-	public void setStone(int stone) {
-		this.stone = stone;
-	}
-	public int getFood() {
-		return food;
-	}
-	public void setFood(int food) {
-		this.food = food;
-	}
-	
-	
 }

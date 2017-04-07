@@ -4,16 +4,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
-import com.basut.townmanager.manager.TownManager;
+import com.basut.townmanager.manager.TickManager;
 
 @Component
 public class Tick {
 
 	@Autowired
-	private TownManager townManager;
-	
-	@Scheduled(fixedDelay=5000)
+	private TickManager tickManager;
+
+	@Scheduled(fixedDelay = 5000)
 	public void tick() {
-		townManager.calculateTurn();
+		tickManager.tick();
 	}
 }

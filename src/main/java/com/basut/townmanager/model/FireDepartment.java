@@ -16,12 +16,12 @@ public class FireDepartment extends Building {
 			buildingCosts.setStone(350 * i);
 			upgradeTable.put(UpgradeLevel.levelSelect(i), buildingCosts);
 		}
+
 		BuildingCosts upgradeCosts = new BuildingCosts();
 		upgradeTable.put(UpgradeLevel.MIDDLE, upgradeCosts);
 		this.upgradeTable = upgradeTable;
 
 		upgradeTable.get(1);
-
 	}
 
 	@Override
@@ -29,11 +29,4 @@ public class FireDepartment extends Building {
 		level = level.nextLevel();
 		return true;
 	}
-
-	@Override
-	public void calculateOutput(Storage lager) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

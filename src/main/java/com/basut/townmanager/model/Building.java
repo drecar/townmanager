@@ -10,7 +10,7 @@ public abstract class Building {
 	private int zustand;
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
 	protected Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
-	protected Set<Worker> workers = new HashSet<>();
+	protected Set<Minion> workers = new HashSet<>();
 
 	public abstract boolean upgrade();
 
@@ -27,9 +27,11 @@ public abstract class Building {
 		
 	}
 
-	public abstract void calculateOutput(Storage lager);
+	public BuildingCosts calculateOutput(Minion minion) {
+		return new BuildingCosts();
+	}
 
-	public Set<Worker> getWorkers() {
+	public Set<Minion> getWorkers() {
 		return workers;
 	}
 

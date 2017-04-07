@@ -24,11 +24,4 @@ public class HuntingHut extends Building {
 		level = level.nextLevel();
 		return false;
 	}
-
-	@Override
-	public void calculateOutput(Storage lager) {
-		// TODO Auto-generated method stub
-
-	}
-
 }

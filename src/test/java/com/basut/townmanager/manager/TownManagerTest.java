@@ -4,13 +4,12 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import com.basut.townmanager.manager.TownManager;
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.FireDepartment;
+import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.StonemaconHut;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.UpgradeLevel;
-import com.basut.townmanager.model.Worker;
 
 public class TownManagerTest {
 
@@ -44,15 +43,12 @@ public class TownManagerTest {
 
 		townManager.upgradeBuilding(building);
 
-		assertEquals(2000 - building
-				.getUpgradeCosts(building.getUpgradeLevel()).getFood(), town
-				.getStorage().getFood());
-		assertEquals(2000 - building
-				.getUpgradeCosts(building.getUpgradeLevel()).getWood(), town
-				.getStorage().getWood());
-		assertEquals(2000 - building
-				.getUpgradeCosts(building.getUpgradeLevel()).getStone(), town
-				.getStorage().getStone());
+		assertEquals(2000 - building.getUpgradeCosts(building.getUpgradeLevel()).getFood(),
+				town.getStorage().getFood());
+		assertEquals(2000 - building.getUpgradeCosts(building.getUpgradeLevel()).getWood(),
+				town.getStorage().getWood());
+		assertEquals(2000 - building.getUpgradeCosts(building.getUpgradeLevel()).getStone(),
+				town.getStorage().getStone());
 		// Ressourcen-UpgradeCosts
 		assertEquals(UpgradeLevel.VERY_LOW, building.getUpgradeLevel());
 	}
@@ -70,17 +66,19 @@ public class TownManagerTest {
 		// lager erhält ressourcen abhängig von hütte und arbeiter
 
 		Building building = new StonemaconHut();
-		Worker worker = new Worker();
+		Minion worker = new Minion();
 		worker.setStrength(8);
-		
+
 		setHighRessources();
 		building.upgrade();
 		townManager.addWorkerToBuilding(building, worker);
 		town.getBuildings().add(building);
-		townManager.calculateTurn();
-		
+		TickManager tickManager = new TickManager();
+		tickManager.tick();
+
 		assertEquals(2000 + 10 + 8 * 1, town.getStorage().getStone());
 	}
+
 	@Test
 	public void test() {
 		// fail("Not yet implemented");

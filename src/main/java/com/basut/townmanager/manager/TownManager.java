@@ -5,10 +5,9 @@ import org.springframework.stereotype.Component;
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.FireDepartment;
-import com.basut.townmanager.model.Storage;
+import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.UpgradeLevel;
-import com.basut.townmanager.model.Worker;
 
 import lombok.Getter;
 
@@ -20,28 +19,7 @@ public class TownManager {
 	public TownManager() {
 	}
 
-	public void calculateTurn() {
-		Storage lager = town.getStorage();
-		calculateBasics(lager);
-		calculateRessourcesFromBuildings(lager);
-	}
-
-	private void calculateRessourcesFromBuildings(Storage lager) {
-		town.getBuildings().stream().forEach(building -> {
-			building.calculateOutput(lager);
-		});
-		
-	}
-
-	private void calculateBasics(Storage lager) {
-		lager.setFood(lager.getFood() + 10);
-		lager.setWood(lager.getWood() + 10);
-		lager.setStone(lager.getStone() + 10);
-	}
-
-
-	public void addWorkerToBuilding(Building building, Worker worker) {
-
+	public void addWorkerToBuilding(Building building, Minion worker) {
 		building.getWorkers().add(worker);
 	}
 
@@ -53,8 +31,7 @@ public class TownManager {
 			System.out.println("Firedepartment hinzugef�gt.");
 			return true;
 		} else {
-			System.out
-					.println("Sorry, konnte deine Firedepartment nicht bauen.");
+			System.out.println("Sorry, konnte deine Firedepartment nicht bauen.");
 			return false;
 		}
 
@@ -62,8 +39,7 @@ public class TownManager {
 
 	public boolean upgradeBuilding(Building building) {
 		if (checkIfUpgradable(building)) {
-			if (checkAndRemoveFromStorage(building.getUpgradeCosts(building
-					.getUpgradeLevel().nextLevel()))) {
+			if (checkAndRemoveFromStorage(building.getUpgradeCosts(building.getUpgradeLevel().nextLevel()))) {
 
 				return building.upgrade();
 			}
@@ -71,16 +47,16 @@ public class TownManager {
 		}
 		return false;
 	}
-	
+
 	private boolean checkIfUpgradable(Building building) {
 		if (building.getUpgradeLevel() != UpgradeLevel.MAX) {
 
 			return true;
 		}
-		
+
 		return false;
 	}
-	
+
 	private boolean checkAndRemoveFromStorage(BuildingCosts buildingCosts) {
 		if (checkBuildingCosts(buildingCosts)) {
 
@@ -99,11 +75,22 @@ public class TownManager {
 
 	private boolean checkBuildingCosts(BuildingCosts buildingCosts) {
 		return (town.getStorage().getFood() >= buildingCosts.getFood()
-				&& town.getStorage().getWood() >= buildingCosts.getWood() && town
-				.getStorage().getStone() >= buildingCosts.getStone());
+				&& town.getStorage().getWood() >= buildingCosts.getWood()
+				&& town.getStorage().getStone() >= buildingCosts.getStone());
 	}
 
 	public Town getTown() {
 		return this.town;
+	}
+
+	public void addRessourcesToStorage(BuildingCosts gatheredRessources) {
+
+		int food = town.getStorage().getFood() + gatheredRessources.getFood();
+		int wood = town.getStorage().getWood() + gatheredRessources.getWood();
+		int stone = town.getStorage().getStone() + gatheredRessources.getStone();
+
+		town.getStorage().setFood(food);
+		town.getStorage().setWood(wood);
+		town.getStorage().setStone(stone);
 	}
 }

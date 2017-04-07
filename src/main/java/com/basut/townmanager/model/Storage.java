@@ -48,13 +48,4 @@ public class Storage extends Building {
 	public boolean upgrade() {
 		return false;
 	}
-
-	@Override
-	public void calculateOutput(Storage lager) {
-		// TODO Auto-generated method stub
-
-	}
-	
-	
-	
 }

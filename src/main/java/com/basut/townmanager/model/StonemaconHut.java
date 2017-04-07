@@ -24,12 +24,4 @@ public class StonemaconHut extends Building {
 		level = level.nextLevel();
 		return false;
 	}
-
-	@Override
-	public void calculateOutput(Storage lager) {
-
-		// jeder Worker fügt str*lev(hut) an stein je Tick hinzu
-		workers.forEach(worker -> lager.setStone(lager.getStone() + worker.getStrength() * this.level.getLevelValue()));
-	}
-
 }
