@@ -1,4 +1,4 @@
-package model;
+package com.basut.townmanager.model;
 
 import java.util.HashMap;
 import java.util.HashSet;

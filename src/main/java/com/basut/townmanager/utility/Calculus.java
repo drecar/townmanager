@@ -1,4 +1,4 @@
-package utility;
+package com.basut.townmanager.utility;
 
 public class Calculus {
 

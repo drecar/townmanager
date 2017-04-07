@@ -1,19 +1,23 @@
-package manager;
+package com.basut.townmanager.manager;
 
-import model.Building;
-import model.BuildingCosts;
-import model.FireDepartment;
-import model.Storage;
-import model.Town;
-import model.UpgradeLevel;
-import model.Worker;
+import org.springframework.stereotype.Component;
 
+import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.FireDepartment;
+import com.basut.townmanager.model.Storage;
+import com.basut.townmanager.model.Town;
+import com.basut.townmanager.model.UpgradeLevel;
+import com.basut.townmanager.model.Worker;
+
+import lombok.Getter;
+
+@Component
+@Getter
 public class TownManager {
-	private Town town;
+	private Town town = new Town();
 
-	public TownManager(Town town) {
-		this.town = town;
-
+	public TownManager() {
 	}
 
 	public void calculateTurn() {
@@ -97,5 +101,9 @@ public class TownManager {
 		return (town.getStorage().getFood() >= buildingCosts.getFood()
 				&& town.getStorage().getWood() >= buildingCosts.getWood() && town
 				.getStorage().getStone() >= buildingCosts.getStone());
+	}
+
+	public Town getTown() {
+		return this.town;
 	}
 }

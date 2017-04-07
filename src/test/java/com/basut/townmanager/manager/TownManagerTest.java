@@ -1,20 +1,21 @@
-package manager;
+package com.basut.townmanager.manager;
 
 import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-import model.Building;
-import model.FireDepartment;
-import model.StonemaconHut;
-import model.Town;
-import model.UpgradeLevel;
-import model.Worker;
+import com.basut.townmanager.manager.TownManager;
+import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.FireDepartment;
+import com.basut.townmanager.model.StonemaconHut;
+import com.basut.townmanager.model.Town;
+import com.basut.townmanager.model.UpgradeLevel;
+import com.basut.townmanager.model.Worker;
 
 public class TownManagerTest {
 
-	private Town town = new Town();
-	private TownManager townManager = new TownManager(town);
+	private TownManager townManager = new TownManager();
+	private Town town = townManager.getTown();
 
 	@Test
 	public void testUpgradeBuildingNotEnoughRessources() {

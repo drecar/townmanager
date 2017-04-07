@@ -1,4 +1,4 @@
-package model;
+package com.basut.townmanager.model;
 
 public enum UpgradeLevel {
 	NOT_BUILT(0), VERY_LOW(1), LOW(2), MIDDLE(3), HIGH(4), MAX(5);

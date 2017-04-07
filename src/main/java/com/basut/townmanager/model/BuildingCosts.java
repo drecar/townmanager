@@ -1,4 +1,4 @@
-package model;
+package com.basut.townmanager.model;
 
 public class BuildingCosts {
 	private int wood;

@@ -1,4 +1,4 @@
-package model;
+package com.basut.townmanager.model;
 
 public class Storage extends Building {
 	private int wood;

@@ -1,16 +1,16 @@
-package model;
+package com.basut.townmanager.model;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class StonemaconHut extends Building {
+public class HuntingHut extends Building {
 
-	public StonemaconHut() {
+	public HuntingHut() {
 
 		Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
 		BuildingCosts buildingCosts = new BuildingCosts();
-		buildingCosts.setFood(125);
-		buildingCosts.setWood(150);
+		buildingCosts.setFood(100);
+		buildingCosts.setWood(200);
 		buildingCosts.setStone(100);
 		upgradeTable.put(UpgradeLevel.NOT_BUILT, buildingCosts);
 
@@ -27,9 +27,8 @@ public class StonemaconHut extends Building {
 
 	@Override
 	public void calculateOutput(Storage lager) {
+		// TODO Auto-generated method stub
 
-		// jeder Worker fügt str*lev(hut) an stein je Tick hinzu
-		workers.forEach(worker -> lager.setStone(lager.getStone() + worker.getStrength() * this.level.getLevelValue()));
 	}
 
 }
