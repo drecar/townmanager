@@ -1,5 +1,8 @@
 package com.basut.townmanager.manager;
 
+import javax.annotation.PostConstruct;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Building;
@@ -15,10 +18,18 @@ import lombok.Getter;
 @Getter
 public class TownManager {
 	private Town town = new Town();
+	
+	@Autowired
+	MinionManager minionManager;
 
 	public TownManager() {
 	}
 
+	@PostConstruct
+	public void init(){
+		minionManager.initMonsters(town);
+	}
+	
 	public void addWorkerToBuilding(Building building, Minion worker) {
 		building.getWorkers().add(worker);
 	}
