@@ -8,6 +8,7 @@ import java.util.Set;
 public abstract class Building {
 
 	private int zustand;
+	protected String name;
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
 	protected Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
 	protected Set<Minion> workers = new HashSet<>();

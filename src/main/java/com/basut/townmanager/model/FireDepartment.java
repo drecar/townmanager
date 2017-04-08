@@ -3,10 +3,12 @@ package com.basut.townmanager.model;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.basut.townmanager.utility.TownManagerConstants;
+
 public class FireDepartment extends Building {
 
 	public FireDepartment() {
-
+		this.name = TownManagerConstants.FIRE_DEPARTMENT;
 		Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
 
 		for (int i = 0; i >= 5; i++) {

@@ -5,34 +5,14 @@ import java.util.List;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class Town {
 	private String name = "Utopia";
 	private Storage storage = new Storage();
 	private List<Building> buildings= new ArrayList<>();
-	private List<Minion> worker = new ArrayList<>();
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
-	}
-
-	public Storage getStorage() {
-		return storage;
-	}
-
-	@Override
-	public String toString() {
-		return name;
-	}
-
-	public List<Building> getBuildings() {
-		return buildings;
-	}
-	
+	private List<Minion> worker = new ArrayList<>();	
 }

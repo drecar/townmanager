@@ -1,0 +1,78 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Townmanager</title>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+
+<link rel="stylesheet" type="text/css"
+	href="webjars/bootstrap/3.3.7/css/bootstrap.min.css" />
+
+<link rel="stylesheet" th:href="@{/css/main.css}"
+	href="../../css/main.css" />
+
+</head>
+<body>
+
+	<nav class="navbar navbar-inverse">
+		<div class="container">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">Townmanager</a>
+			</div>
+			<div id="navbar" class="collapse navbar-collapse">
+				<ul class="nav navbar-nav">
+					<li class="active"><a href="#">Town</a></li>
+					<li><a href="dungeons">Dungeons</a></li>
+					<li><a href="dungeons">Worker</a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<div class="container">
+
+		<div class="starter-template">
+			<h1>
+				<span th:text="'Welcome to ' + ${town.name}">town</span>
+			</h1>
+			<!-- 			<h2> -->
+			<!-- 				<span th:text="'Message: ' + ${message}">NoMessage</span> -->
+			<!-- 			</h2> -->
+			<span th:text="'Town: ' + ${town}">town</span>
+
+			<h2>Storage</h2>
+			<table>
+				<thead>
+					<tr>
+						<th>Resource</th>
+						<th>Value</th>
+					</tr>
+				</thead>
+				<tbody>
+					<!-- 					<tr th:each="ressource : ${town.storage}"> -->
+					<!-- 						<td th:text="${ressource.name}">13/01/2011</td> -->
+					<!-- 						<td th:text="${resource.value}">yes</td> -->
+					<!-- 					</tr> -->
+
+					<tr>
+						<td>Wood</td>
+						<td th:text="${town.storage.wood}">88</td>
+					</tr>
+					<tr>
+						<td>Stone</td>
+						<td th:text="${town.storage.stone}">88</td>
+					</tr>
+					<tr>
+						<td>Wood</td>
+						<td th:text="${town.storage.food}">88</td>
+					</tr>
+				</tbody>
+			</table>
+
+		</div>
+	</div>
+	<!-- /.container -->
+
+	<script type="text/javascript"
+		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+</body>
+</html>
