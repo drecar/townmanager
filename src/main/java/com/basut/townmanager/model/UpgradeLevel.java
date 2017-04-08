@@ -1,5 +1,8 @@
 package com.basut.townmanager.model;
 
+import lombok.Getter;
+
+@Getter
 public enum UpgradeLevel {
 	NOT_BUILT(0), VERY_LOW(1), LOW(2), MIDDLE(3), HIGH(4), MAX(5);
 	private static UpgradeLevel[] levels = values();
@@ -7,10 +10,6 @@ public enum UpgradeLevel {
 
 	UpgradeLevel(int level) {
 		levelValue = level;
-	}
-
-	public int getLevelValue() {
-		return levelValue;
 	}
 
 	public static UpgradeLevel levelSelect(int level) {

@@ -1,12 +1,16 @@
 package com.basut.townmanager.model.buildings;
 
 import com.basut.townmanager.model.Building;
+import com.basut.townmanager.utility.TownManagerConstants;
 
 public class Storage extends Building {
 	private int wood;
 	private int stone;
 	private int food;
 
+	public Storage() {
+		name =TownManagerConstants.STORAGE;
+	}
 	public void setWood(int wood) {
 		if (wood < 0) {
 			wood = 0;

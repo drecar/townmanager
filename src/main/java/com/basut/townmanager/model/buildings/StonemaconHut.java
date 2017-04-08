@@ -6,6 +6,7 @@ import java.util.Map;
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.UpgradeLevel;
+import com.basut.townmanager.utility.TownManagerConstants;
 
 public class StonemaconHut extends Building {
 
@@ -21,6 +22,7 @@ public class StonemaconHut extends Building {
 		BuildingCosts upgradeCosts = new BuildingCosts();
 		upgradeTable.put(UpgradeLevel.MIDDLE, upgradeCosts);
 		this.upgradeTable = upgradeTable;
+		this.name = TownManagerConstants.STONEMACON_HUT;
 	}
 
 	@Override

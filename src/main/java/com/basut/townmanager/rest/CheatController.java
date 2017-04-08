@@ -28,6 +28,12 @@ public class CheatController {
 	public String cheatBasic() {
 		cheatBasisBuildings();
 
+		cheatWorker();
+
+		return "redirect:";
+	}
+
+	private void cheatWorker() {
 		Town town = townManager.getTown();
 
 		Optional<Building> huntingHut = town.getBuildings().stream()
@@ -41,8 +47,6 @@ public class CheatController {
 		
 		Minion workless = new Minion();
 		town.getWorker().add(workless);
-
-		return "redirect:";
 	}
 
 	private void cheatBasisBuildings() {

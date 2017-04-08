@@ -68,6 +68,27 @@
 				</tbody>
 			</table>
 
+			<div class="container">
+				<h2>Buildings</h2>
+				<p>Buildings in <span th:text="${town.name}"></span>:</p>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Building</th>
+							<th>Level</th>
+							<th>Zustand</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="building: ${town.buildings}">
+							<td th:text="${building.name}">John</td>
+							<td th:text="${building.level.levelValue}">John</td>
+							<td th:text="${building.zustand}">John</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
 		</div>
 	</div>
 	<!-- /.container -->

@@ -6,6 +6,7 @@ import java.util.Map;
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.UpgradeLevel;
+import com.basut.townmanager.utility.TownManagerConstants;
 
 import lombok.Getter;
 import lombok.ToString;
@@ -26,6 +27,7 @@ public class LumberjacksHut extends Building {
 		BuildingCosts upgradeCosts = new BuildingCosts();
 		upgradeTable.put(UpgradeLevel.MIDDLE, upgradeCosts);
 		this.upgradeTable = upgradeTable;
+		this.name = TownManagerConstants.LUMBER_JACKS_HUT;
 	}
 
 	@Override
