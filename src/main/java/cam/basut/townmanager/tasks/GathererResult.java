@@ -1,4 +1,6 @@
-package com.basut.townmanager.model;
+package cam.basut.townmanager.tasks;
+
+import com.basut.townmanager.model.BuildingCosts;
 
 import lombok.Getter;
 import lombok.Setter;

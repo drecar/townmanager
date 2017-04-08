@@ -1,16 +1,20 @@
-package com.basut.townmanager.model;
+package com.basut.townmanager.model.buildings;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class StonemaconHut extends Building {
+import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.UpgradeLevel;
 
-	public StonemaconHut() {
+public class Park extends Building {
+
+	public Park() {
 
 		Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
 		BuildingCosts buildingCosts = new BuildingCosts();
-		buildingCosts.setFood(125);
-		buildingCosts.setWood(150);
+		buildingCosts.setFood(50);
+		buildingCosts.setWood(50);
 		buildingCosts.setStone(100);
 		upgradeTable.put(UpgradeLevel.NOT_BUILT, buildingCosts);
 
@@ -18,6 +22,9 @@ public class StonemaconHut extends Building {
 		upgradeTable.put(UpgradeLevel.MIDDLE, upgradeCosts);
 		this.upgradeTable = upgradeTable;
 	}
+
+	// TODO ben�tigt anderes Geb�ude
+	// TODO Test Ressourcen abziehen
 
 	@Override
 	public boolean upgrade() {

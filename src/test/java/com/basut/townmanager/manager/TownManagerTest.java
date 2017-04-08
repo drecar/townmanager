@@ -5,11 +5,11 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.basut.townmanager.model.Building;
-import com.basut.townmanager.model.FireDepartment;
 import com.basut.townmanager.model.Minion;
-import com.basut.townmanager.model.StonemaconHut;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.UpgradeLevel;
+import com.basut.townmanager.model.buildings.FireDepartment;
+import com.basut.townmanager.model.buildings.StonemaconHut;
 
 public class TownManagerTest {
 

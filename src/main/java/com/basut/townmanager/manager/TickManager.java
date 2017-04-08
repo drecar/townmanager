@@ -7,11 +7,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.BuildingCosts;
-import com.basut.townmanager.model.GathererResult;
-import com.basut.townmanager.model.GathererTask;
-import com.basut.townmanager.model.Storage;
-import com.basut.townmanager.model.TownTask;
+import com.basut.townmanager.model.buildings.Storage;
 
+import cam.basut.townmanager.tasks.GathererResult;
+import cam.basut.townmanager.tasks.GathererTask;
+import cam.basut.townmanager.tasks.TownTask;
 import lombok.Getter;
 import lombok.Setter;
 

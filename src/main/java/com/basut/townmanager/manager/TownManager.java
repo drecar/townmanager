@@ -4,10 +4,10 @@ import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
-import com.basut.townmanager.model.FireDepartment;
 import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.UpgradeLevel;
+import com.basut.townmanager.model.buildings.FireDepartment;
 
 import lombok.Getter;
 

@@ -3,6 +3,8 @@ package com.basut.townmanager.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.basut.townmanager.model.buildings.Storage;
+
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;

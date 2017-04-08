@@ -1,16 +1,23 @@
-package com.basut.townmanager.model;
+package com.basut.townmanager.model.buildings;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class Park extends Building {
+import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.UpgradeLevel;
 
-	public Park() {
+import lombok.ToString;
+
+@ToString
+public class HuntingHut extends Building {
+
+	public HuntingHut() {
 
 		Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
 		BuildingCosts buildingCosts = new BuildingCosts();
-		buildingCosts.setFood(50);
-		buildingCosts.setWood(50);
+		buildingCosts.setFood(100);
+		buildingCosts.setWood(200);
 		buildingCosts.setStone(100);
 		upgradeTable.put(UpgradeLevel.NOT_BUILT, buildingCosts);
 
@@ -18,9 +25,6 @@ public class Park extends Building {
 		upgradeTable.put(UpgradeLevel.MIDDLE, upgradeCosts);
 		this.upgradeTable = upgradeTable;
 	}
-
-	// TODO ben�tigt anderes Geb�ude
-	// TODO Test Ressourcen abziehen
 
 	@Override
 	public boolean upgrade() {

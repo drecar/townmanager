@@ -1,4 +1,4 @@
-package com.basut.townmanager.model;
+package cam.basut.townmanager.tasks;
 
 public abstract class TownResult {
 

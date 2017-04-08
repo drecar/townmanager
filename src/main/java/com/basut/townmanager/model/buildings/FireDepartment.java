@@ -1,10 +1,16 @@
-package com.basut.townmanager.model;
+package com.basut.townmanager.model.buildings;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.UpgradeLevel;
 import com.basut.townmanager.utility.TownManagerConstants;
 
+import lombok.ToString;
+
+@ToString
 public class FireDepartment extends Building {
 
 	public FireDepartment() {

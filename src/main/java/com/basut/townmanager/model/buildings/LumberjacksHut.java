@@ -1,8 +1,17 @@
-package com.basut.townmanager.model;
+package com.basut.townmanager.model.buildings;
 
 import java.util.HashMap;
 import java.util.Map;
 
+import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.UpgradeLevel;
+
+import lombok.Getter;
+import lombok.ToString;
+
+@ToString
+@Getter
 public class LumberjacksHut extends Building {
 
 	public LumberjacksHut() {

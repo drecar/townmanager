@@ -5,6 +5,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import lombok.ToString;
+
+@ToString
 public abstract class Building {
 
 	private int zustand;

@@ -1,4 +1,6 @@
-package com.basut.townmanager.model;
+package cam.basut.townmanager.tasks;
+
+import com.basut.townmanager.model.Minion;
 
 import lombok.Getter;
 import lombok.Setter;
