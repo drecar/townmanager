@@ -1,10 +1,15 @@
-package cam.basut.townmanager.tasks;
+package com.basut.townmanager.tasks;
+
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
 
 import com.basut.townmanager.model.Minion;
 
 import lombok.ToString;
 
 @ToString
+@Entity
+@DiscriminatorValue("I")
 public class IdleTask extends TownTask {
 	
 	@Override

@@ -1,4 +1,4 @@
-package cam.basut.townmanager.tasks;
+package com.basut.townmanager.tasks;
 
 import com.basut.townmanager.model.BuildingCosts;
 

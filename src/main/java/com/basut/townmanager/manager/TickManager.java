@@ -8,10 +8,10 @@ import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.buildings.Storage;
+import com.basut.townmanager.tasks.GathererResult;
+import com.basut.townmanager.tasks.GathererTask;
+import com.basut.townmanager.tasks.TownTask;
 
-import cam.basut.townmanager.tasks.GathererResult;
-import cam.basut.townmanager.tasks.GathererTask;
-import cam.basut.townmanager.tasks.TownTask;
 import lombok.Getter;
 import lombok.Setter;
 

@@ -4,11 +4,12 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
-import cam.basut.townmanager.tasks.IdleTask;
-import cam.basut.townmanager.tasks.TownTask;
+import com.basut.townmanager.tasks.IdleTask;
+import com.basut.townmanager.tasks.TownTask;
+
 import lombok.Getter;
 import lombok.Setter;
 
@@ -28,6 +29,13 @@ public class Minion {
 	@Column(name = "strength")
 	private int strength;
 	
-	@Transient
+	@OneToOne
 	private TownTask task = new IdleTask();
+	
+	public TownTask getTask() {
+		if(task == null) {
+			return new IdleTask();
+		}
+		return task;
+	}
 }

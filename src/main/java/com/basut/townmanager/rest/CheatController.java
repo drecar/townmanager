@@ -14,8 +14,7 @@ import com.basut.townmanager.model.buildings.FireDepartment;
 import com.basut.townmanager.model.buildings.HuntingHut;
 import com.basut.townmanager.model.buildings.LumberjacksHut;
 import com.basut.townmanager.model.buildings.StonemaconHut;
-
-import cam.basut.townmanager.tasks.GathererTask;
+import com.basut.townmanager.tasks.GathererTask;
 
 @Controller
 @RequestMapping("/cheat")
