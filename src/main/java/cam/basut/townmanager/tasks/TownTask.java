@@ -4,9 +4,11 @@ import com.basut.townmanager.model.Minion;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public abstract class TownTask {
 
 	protected boolean isFinished;

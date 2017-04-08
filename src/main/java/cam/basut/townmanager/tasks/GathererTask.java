@@ -5,8 +5,10 @@ import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.Minion;
 
 import lombok.Builder;
+import lombok.ToString;
 
 @Builder
+@ToString
 public class GathererTask extends TownTask {
 
 	private Building buildingAssignment;

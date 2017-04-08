@@ -16,5 +16,5 @@ public class Town {
 	private String name = "Utopia";
 	private Storage storage = new Storage();
 	private List<Building> buildings= new ArrayList<>();
-	private List<Minion> worker = new ArrayList<>();	
+	private List<Minion> workers = new ArrayList<>();	
 }

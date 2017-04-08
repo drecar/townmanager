@@ -40,13 +40,15 @@ public class CheatController {
 				.filter(building -> (building instanceof HuntingHut)).findFirst();
 		if (huntingHut.isPresent()) {
 			Minion hunter = new Minion();
-			town.getWorker().add(hunter);
+			hunter.setName("hunter");
+			town.getWorkers().add(hunter);
 			GathererTask gathererTask = GathererTask.builder().buildingAssignment(huntingHut.get()).build();
 			hunter.setTask(gathererTask);
 		}
 		
 		Minion workless = new Minion();
-		town.getWorker().add(workless);
+		workless.setName("Workless");
+		town.getWorkers().add(workless);
 	}
 
 	private void cheatBasisBuildings() {

@@ -33,9 +33,9 @@ public class TickManager {
 		Storage lager = townManager.getTown().getStorage();
 		calculateBasics(lager);
 
-		townManager.getTown().getWorker().stream().forEach(minion -> minion.getTask().performTownTask(minion));
+		townManager.getTown().getWorkers().stream().forEach(minion -> minion.getTask().performTownTask(minion));
 
-		List<TownTask> finishedTasks = townManager.getTown().getWorker().stream().map(worker -> worker.getTask())
+		List<TownTask> finishedTasks = townManager.getTown().getWorkers().stream().map(worker -> worker.getTask())
 				.filter(task -> task.isFinished()).collect(Collectors.toList());
 
 		collectGathererTask(finishedTasks);

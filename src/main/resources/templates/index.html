@@ -22,7 +22,7 @@
 				<ul class="nav navbar-nav">
 					<li class="active"><a href="#">Town</a></li>
 					<li><a href="dungeons">Dungeons</a></li>
-					<li><a href="dungeons">Worker</a></li>
+					<li><a href="workers">Worker</a></li>
 				</ul>
 			</div>
 		</div>
@@ -39,38 +39,41 @@
 			<!-- 			</h2> -->
 			<span th:text="'Town: ' + ${town}">town</span>
 
-			<h2>Storage</h2>
-			<table>
-				<thead>
-					<tr>
-						<th>Resource</th>
-						<th>Value</th>
-					</tr>
-				</thead>
-				<tbody>
-					<!-- 					<tr th:each="ressource : ${town.storage}"> -->
-					<!-- 						<td th:text="${ressource.name}">13/01/2011</td> -->
-					<!-- 						<td th:text="${resource.value}">yes</td> -->
-					<!-- 					</tr> -->
-
-					<tr>
-						<td>Wood</td>
-						<td th:text="${town.storage.wood}">88</td>
-					</tr>
-					<tr>
-						<td>Stone</td>
-						<td th:text="${town.storage.stone}">88</td>
-					</tr>
-					<tr>
-						<td>Wood</td>
-						<td th:text="${town.storage.food}">88</td>
-					</tr>
-				</tbody>
-			</table>
 
 			<div class="container">
+				<h2>Storage</h2>
+				<p>
+					Resources in the storage of <span th:text="${town.name}"></span>:
+				</p>
+				<table class="table table-striped">
+					<thead>
+						<tr>
+							<th>Resource</th>
+							<th>Value</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td>Wood</td>
+							<td th:text="${town.storage.wood}">88</td>
+						</tr>
+						<tr>
+							<td>Stone</td>
+							<td th:text="${town.storage.stone}">88</td>
+						</tr>
+						<tr>
+							<td>Wood</td>
+							<td th:text="${town.storage.food}">88</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+			
+			<div class="container">
 				<h2>Buildings</h2>
-				<p>Buildings in <span th:text="${town.name}"></span>:</p>
+				<p>
+					Buildings in <span th:text="${town.name}"></span>:
+				</p>
 				<table class="table table-striped">
 					<thead>
 						<tr>

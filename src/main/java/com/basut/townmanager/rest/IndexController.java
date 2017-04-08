@@ -30,8 +30,10 @@ public class IndexController {
 		return "redirect:";
 	}
 	
-	@RequestMapping("/worker")
+	@RequestMapping("/workers")
 	public String worker(Map<String, Object> model) {
-		return "redirect:";
+		model.put("message", this.message);
+		model.put("town", townManager.getTown());
+		return "workers";
 	}
 }
