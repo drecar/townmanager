@@ -6,5 +6,6 @@ public class TownManagerConstants {
 	public static final String STORAGE = "Storage";
 	public static final String STONEMACON_HUT = "StoneMaconHut";
 	public static final String LUMBER_JACKS_HUT = "LumberjackyHut";
-	
+	public static final String PARK = "Park";
+
 }

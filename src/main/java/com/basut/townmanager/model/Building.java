@@ -23,24 +23,24 @@ import lombok.ToString;
 @Getter
 @Entity
 @Inheritance
-@DiscriminatorColumn(name="building_type")
-@Table(name="building")
+@DiscriminatorColumn(name = "building_type")
+@Table(name = "building")
 public abstract class Building {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 	@Column
 	private int zustand;
 	@Column
 	protected String name;
 	@Column
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
-	
-	@OneToMany(cascade=CascadeType.ALL)
+
+	@OneToMany(cascade = CascadeType.ALL)
 	@MapKeyEnumerated
 	protected Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	protected Set<Minion> workers = new HashSet<>();
 
 	public abstract boolean upgrade();
@@ -50,12 +50,12 @@ public abstract class Building {
 	}
 
 	public BuildingCosts getUpgradeCosts(UpgradeLevel level) {
-		if(upgradeTable.containsKey(level)){
+		if (upgradeTable.containsKey(level)) {
 			return upgradeTable.get(level);
 		}
-		
+
 		return new BuildingCosts();
-		
+
 	}
 
 	public BuildingCosts calculateOutput(Minion minion) {
