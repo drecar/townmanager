@@ -17,6 +17,7 @@ import com.basut.townmanager.model.buildings.LumberjacksHut;
 import com.basut.townmanager.model.buildings.StonemaconHut;
 import com.basut.townmanager.repo.BuildingRepository;
 import com.basut.townmanager.repo.MinionRepository;
+import com.basut.townmanager.repo.TownRepository;
 import com.basut.townmanager.tasks.GathererTask;
 
 @Component
@@ -30,6 +31,9 @@ public class SetupManager {
 	@Autowired
 	MinionRepository minionRepository;
 	
+	@Autowired
+	TownRepository townRepository;
+	
 	@PostConstruct
 	public void initDatabase() {
 		createMonsters();
@@ -42,7 +46,6 @@ public class SetupManager {
 		
 		List<Minion> minions = minionRepository.findAll();
 		townManager.getTown().setWorkers(minions);
-		
 	}
 	
 	public void cheatWorker() {
