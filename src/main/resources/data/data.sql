@@ -1,5 +1,5 @@
 INSERT INTO town_task(town_task_type, id, duration, is_finished) values ('I','1', '100', false);
-INSERT INTO town_task(town_task_type, id, duration, is_finished) values ('G', '2', '100', false);
+INSERT INTO town_task(town_task_type, id, duration, is_finished) values ('I', '2', '100', false);
 INSERT INTO town_task(town_task_type, id, duration, is_finished) values ('I', '3', '100', false);
 
 
