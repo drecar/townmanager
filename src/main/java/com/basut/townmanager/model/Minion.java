@@ -1,5 +1,6 @@
 package com.basut.townmanager.model;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -29,7 +30,7 @@ public class Minion {
 	@Column(name = "strength")
 	private int strength;
 	
-	@OneToOne
+	@OneToOne(cascade=CascadeType.ALL)
 	private TownTask task = new IdleTask();
 	
 	public TownTask getTask() {

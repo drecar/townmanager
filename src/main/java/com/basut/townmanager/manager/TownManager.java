@@ -21,6 +21,9 @@ public class TownManager {
 	
 	@Autowired
 	MinionManager minionManager;
+	
+	@Autowired
+	SetupManager setupManager;
 
 	public TownManager() {
 	}

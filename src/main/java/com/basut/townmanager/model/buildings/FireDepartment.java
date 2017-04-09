@@ -3,6 +3,9 @@ package com.basut.townmanager.model.buildings;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.UpgradeLevel;
@@ -11,6 +14,8 @@ import com.basut.townmanager.utility.TownManagerConstants;
 import lombok.ToString;
 
 @ToString
+@Entity
+@DiscriminatorValue("FireDepartment")
 public class FireDepartment extends Building {
 
 	public FireDepartment() {

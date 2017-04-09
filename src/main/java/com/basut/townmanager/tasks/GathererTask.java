@@ -2,7 +2,7 @@ package com.basut.townmanager.tasks;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Transient;
+import javax.persistence.ManyToOne;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
@@ -21,7 +21,7 @@ import lombok.ToString;
 @Builder
 public class GathererTask extends TownTask {
 
-	@Transient
+	@ManyToOne
 	private Building buildingAssignment;
 
 	@Override

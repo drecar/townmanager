@@ -1,8 +1,13 @@
 package com.basut.townmanager.model.buildings;
 
+import javax.persistence.DiscriminatorValue;
+import javax.persistence.Entity;
+
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.utility.TownManagerConstants;
 
+@Entity
+@DiscriminatorValue("Storage")
 public class Storage extends Building {
 	private int wood;
 	private int stone;
