@@ -30,7 +30,7 @@ public abstract class Building {
 
 	@Id
 	@GeneratedValue
-	Long id;
+	private Long id;
 	@Column
 	private int zustand;
 	@Column
