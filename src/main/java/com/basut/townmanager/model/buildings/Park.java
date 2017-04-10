@@ -5,6 +5,7 @@ import java.util.Map;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.BuildingType;
 import com.basut.townmanager.model.UpgradeLevel;
 
 public class Park extends Building {
@@ -30,5 +31,10 @@ public class Park extends Building {
 	public boolean upgrade() {
 		level = level.nextLevel();
 		return false;
+	}
+	
+	@Override
+	public BuildingType getType() {
+		return BuildingType.IDLE;
 	}
 }

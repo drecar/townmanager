@@ -9,6 +9,7 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
@@ -23,8 +24,8 @@ import lombok.ToString;
 @Getter
 @Entity
 @Inheritance
-@DiscriminatorColumn(name="building_type")
-@Table(name="building")
+@DiscriminatorColumn(name = "building_type")
+@Table(name = "building")
 public abstract class Building {
 
 	@Id
@@ -36,26 +37,27 @@ public abstract class Building {
 	protected String name;
 	@Column
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
-	
-	@OneToMany(cascade=CascadeType.ALL)
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@MapKeyEnumerated
 	protected Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
-	@OneToMany(cascade=CascadeType.ALL)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	protected Set<Minion> workers = new HashSet<>();
 
 	public abstract boolean upgrade();
+	public abstract BuildingType getType();
 
 	public UpgradeLevel getUpgradeLevel() {
 		return level;
 	}
 
 	public BuildingCosts getUpgradeCosts(UpgradeLevel level) {
-		if(upgradeTable.containsKey(level)){
+		if (upgradeTable.containsKey(level)) {
 			return upgradeTable.get(level);
 		}
-		
+
 		return new BuildingCosts();
-		
+
 	}
 
 	public BuildingCosts calculateOutput(Minion minion) {

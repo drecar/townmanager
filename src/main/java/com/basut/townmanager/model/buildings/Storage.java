@@ -4,6 +4,7 @@ import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.BuildingType;
 import com.basut.townmanager.utility.TownManagerConstants;
 
 @Entity
@@ -58,5 +59,10 @@ public class Storage extends Building {
 	@Override
 	public boolean upgrade() {
 		return false;
+	}
+	
+	@Override
+	public BuildingType getType() {
+		return BuildingType.STORAGE;
 	}
 }

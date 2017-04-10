@@ -8,12 +8,10 @@ import javax.persistence.Entity;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.BuildingType;
 import com.basut.townmanager.model.UpgradeLevel;
 import com.basut.townmanager.utility.TownManagerConstants;
 
-import lombok.ToString;
-
-@ToString
 @Entity
 @DiscriminatorValue("HuntingHut")
 public class HuntingHut extends Building {
@@ -37,5 +35,10 @@ public class HuntingHut extends Building {
 	public boolean upgrade() {
 		level = level.nextLevel();
 		return false;
+	}
+
+	@Override
+	public BuildingType getType() {
+		return BuildingType.GATHERER;
 	}
 }

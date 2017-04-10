@@ -8,6 +8,7 @@ import javax.persistence.Entity;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.BuildingType;
 import com.basut.townmanager.model.UpgradeLevel;
 import com.basut.townmanager.utility.TownManagerConstants;
 
@@ -41,5 +42,10 @@ public class FireDepartment extends Building {
 	public boolean upgrade() {
 		level = level.nextLevel();
 		return true;
+	}
+
+	@Override
+	public BuildingType getType() {
+		return BuildingType.REPAIR;
 	}
 }
