@@ -28,7 +28,7 @@ public class Minion {
 	private String name;
 
 	@Column(name = "strength")
-	private int strength;
+	private int strength = 10;
 	
 	@OneToOne(cascade=CascadeType.ALL)
 	private TownTask task = new IdleTask();

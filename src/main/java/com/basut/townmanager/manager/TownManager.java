@@ -1,19 +1,22 @@
 package com.basut.townmanager.manager;
 
+import java.util.Map;
+
 import javax.annotation.PostConstruct;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Building;
-import com.basut.townmanager.model.BuildingCosts;
 import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
-import com.basut.townmanager.model.UpgradeLevel;
 import com.basut.townmanager.model.buildings.FireDepartment;
+import com.basut.townmanager.model.buildings.GathererBuilding;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
+import com.basut.townmanager.utility.enums.Resources;
+import com.basut.townmanager.utility.enums.UpgradeLevel;
 
 import lombok.Getter;
 
@@ -74,41 +77,21 @@ public class TownManager {
 		return false;
 	}
 
-	private boolean checkAndRemoveFromStorage(BuildingCosts buildingCosts) {
+	private boolean checkAndRemoveFromStorage(Map<Resources,Long> buildingCosts) {
 		if (checkBuildingCosts(buildingCosts)) {
-
-			int food = town.getStorage().getFood() - buildingCosts.getFood();
-			int wood = town.getStorage().getWood() - buildingCosts.getWood();
-			int stone = town.getStorage().getStone() - buildingCosts.getStone();
-
-			town.getStorage().setFood(food);
-			town.getStorage().setWood(wood);
-			town.getStorage().setStone(stone);
-
+			buildingCosts.keySet().forEach(key -> town.getStorage().removeResource(key, buildingCosts.get(key)));
 			return true;
 		}
 		return false;
 	}
 
-	private boolean checkBuildingCosts(BuildingCosts buildingCosts) {
-		return (town.getStorage().getFood() >= buildingCosts.getFood()
-				&& town.getStorage().getWood() >= buildingCosts.getWood()
-				&& town.getStorage().getStone() >= buildingCosts.getStone());
+	private boolean checkBuildingCosts(Map<Resources,Long> buildingCosts) {
+		long count = buildingCosts.keySet().stream().filter(key ->town.getStorage().getResource(key)<buildingCosts.get(key)).count();
+		return count < 1;
 	}
 
 	public Town getTown() {
 		return this.town;
-	}
-
-	public void addRessourcesToStorage(BuildingCosts gatheredRessources) {
-
-		int food = town.getStorage().getFood() + gatheredRessources.getFood();
-		int wood = town.getStorage().getWood() + gatheredRessources.getWood();
-		int stone = town.getStorage().getStone() + gatheredRessources.getStone();
-
-		town.getStorage().setFood(food);
-		town.getStorage().setWood(wood);
-		town.getStorage().setStone(stone);
 	}
 
 	/**
@@ -121,7 +104,7 @@ public class TownManager {
 		TownTask task = new IdleTask();
 		switch (building.getType()) {
 		case GATHERER:
-			task = GathererTask.builder().buildingAssignment(building).build();
+			task = GathererTask.builder().buildingAssignment((GathererBuilding)building).build();
 			building.getWorkers().add(minion);
 			break;
 		default:

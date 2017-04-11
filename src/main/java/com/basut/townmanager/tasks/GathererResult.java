@@ -1,6 +1,9 @@
 package com.basut.townmanager.tasks;
 
-import com.basut.townmanager.model.BuildingCosts;
+import java.util.HashMap;
+import java.util.Map;
+
+import com.basut.townmanager.utility.enums.Resources;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -9,5 +12,6 @@ import lombok.Setter;
 @Setter
 public class GathererResult extends TownResult {
 
-	private BuildingCosts ressources = new BuildingCosts();
+	private Map<Resources, Long> ressources = new HashMap<>();
+	
 }

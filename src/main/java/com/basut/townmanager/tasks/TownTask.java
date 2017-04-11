@@ -30,12 +30,11 @@ public abstract class TownTask {
 	@Column(name="isFinished")
 	protected boolean isFinished = false;
 	@Column(name = "duration")
-	protected int duration = 1;
+	protected int duration = 4;
 	@Transient
 	protected TownResult townResult;
 	
 	@Transient
 	protected Minion minion;
 	
-	public abstract void performTownTask(Minion minion);
 }

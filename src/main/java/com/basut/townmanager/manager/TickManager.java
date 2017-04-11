@@ -6,11 +6,10 @@ import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
-import com.basut.townmanager.model.BuildingCosts;
+import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.buildings.Storage;
-import com.basut.townmanager.tasks.GathererResult;
-import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.TownTask;
+import com.basut.townmanager.utility.enums.Resources;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -22,39 +21,37 @@ public class TickManager {
 
 	@Autowired
 	private TownManager townManager;
-	// private Town town = townManager.getTown();
+
+	@Autowired
+	private MinionManager minionManager;
+	
+	@Autowired
+	private BuildingManager buildingManager;
+	
+	@Autowired
+	private TaskManager taskManager;
 
 	public void tick() {
-		/*
-		 * clacBasics jeder Minion im Dorf übt Task aus unterscheidung wlecher
-		 * task
-		 */
-
 		Storage lager = townManager.getTown().getStorage();
+		
 		calculateBasics(lager);
-
-		townManager.getTown().getWorkers().stream().forEach(minion -> minion.getTask().performTownTask(minion));
+		
+		//Taks ausführen
+		townManager.getTown().getWorkers().stream().forEach(minion -> taskManager.performTownTask(minion.getTask(), minion));
 
 		List<TownTask> finishedTasks = townManager.getTown().getWorkers().stream().map(worker -> worker.getTask())
 				.filter(task -> task.isFinished()).collect(Collectors.toList());
 
-		collectGathererTask(finishedTasks);
-	}
-
-	private void collectGathererTask(List<TownTask> finishedTasks) {
-
-		List<GathererTask> gathererTasks = finishedTasks.stream().filter(task -> (task instanceof GathererTask))
-				.map(task -> (GathererTask) task).collect(Collectors.toList());
-		BuildingCosts gatheredRessources = new BuildingCosts();
-		gathererTasks.forEach(
-				task -> gatheredRessources.addBuildingCosts(((GathererResult) task.getTownResult()).getRessources()));
-		townManager.addRessourcesToStorage(gatheredRessources);
+		List<Minion> minionsWithFinishedTasks = townManager.getTown().getWorkers().stream()
+				.filter(minion -> minion.getTask().isFinished()).collect(Collectors.toList());
+		
+		taskManager.collectGathererTask(minionsWithFinishedTasks);
 	}
 
 	private void calculateBasics(Storage lager) {
-		lager.setFood(lager.getFood() + 10);
-		lager.setWood(lager.getWood() + 10);
-		lager.setStone(lager.getStone() + 10);
+		lager.addResource(Resources.FOOD, 10L);
+		lager.addResource(Resources.WOOD, 10L);
+		lager.addResource(Resources.STONE, 10L);
 	}
 
 }

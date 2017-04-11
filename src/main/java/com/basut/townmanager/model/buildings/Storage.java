@@ -1,61 +1,56 @@
 package com.basut.townmanager.model.buildings;
 
+import java.util.HashMap;
+import java.util.Map.Entry;
+import java.util.Set;
+
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
 
 import com.basut.townmanager.model.Building;
-import com.basut.townmanager.model.BuildingType;
-import com.basut.townmanager.utility.TownManagerConstants;
+import com.basut.townmanager.utility.enums.BuildingName;
+import com.basut.townmanager.utility.enums.BuildingType;
+import com.basut.townmanager.utility.enums.Resources;
 
 @Entity
 @DiscriminatorValue("Storage")
 public class Storage extends Building {
-	private int wood;
-	private int stone;
-	private int food;
+	
+	private HashMap<Resources, Long> resourcesInStorage= new HashMap<>();
 
 	public Storage() {
-		name =TownManagerConstants.STORAGE;
+		name =BuildingName.STORAGE;
 	}
-	public void setWood(int wood) {
-		if (wood < 0) {
-			wood = 0;
+	
+	public Long getResource(Resources res) {
+		if (resourcesInStorage.containsKey(res)) {
+			return resourcesInStorage.get(res);
 		}
-		this.wood = wood;
+		return 0L;
 	}
 	
-	public void setFood(int food) {
-		if (food < 0) {
-			food = 0;
+	public Set<Entry<Resources, Long>> getResources() {
+		return resourcesInStorage.entrySet();
+	}
+	
+	public void addResource(Resources res, Long resValueToAdd) {
+		if (resourcesInStorage.containsKey(res)) {
+			resourcesInStorage.put(res, resourcesInStorage.get(res)+resValueToAdd);
+		} else {
+			resourcesInStorage.put(res, resValueToAdd);
 		}
-		this.food = food;
 	}
 	
-	public void setStone(int stone) {
-		if (stone < 0) {
-			stone = 0;
-		}
-		this.stone = stone;
+	public void removeResource(Resources res, Long resValueToAdd) {
+		if (resourcesInStorage.containsKey(res)) {
+			Long newStorageValue = resourcesInStorage.get(res)-resValueToAdd;
+			if(newStorageValue<0) {
+				newStorageValue =0L;
+			}
+			resourcesInStorage.put(res, newStorageValue);
+		} 
 	}
 	
-	public int getWood() {
-		return wood;
-	}
-	
-	public int getFood() {
-		return food;
-	}
-	
-	public int getStone() {
-		return stone;
-	}
-
-	@Override
-	public String toString() {
-		return "Storage [wood=" + wood + ", stone=" + stone + ", food=" + food
-				+ "]";
-	}
-
 	@Override
 	public boolean upgrade() {
 		return false;

@@ -13,34 +13,37 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
-import javax.persistence.MapKeyEnumerated;
 import javax.persistence.OneToMany;
-import javax.persistence.Table;
+import javax.persistence.Transient;
+
+import com.basut.townmanager.utility.enums.BuildingName;
+import com.basut.townmanager.utility.enums.BuildingType;
+import com.basut.townmanager.utility.enums.Resources;
+import com.basut.townmanager.utility.enums.UpgradeLevel;
 
 import lombok.Getter;
+import lombok.Setter;
 import lombok.ToString;
 
 @ToString
 @Getter
+@Setter
 @Entity
 @Inheritance
 @DiscriminatorColumn(name = "building_type")
-@Table(name = "building")
 public abstract class Building {
 
 	@Id
 	@GeneratedValue
-	private Long id;
+	protected Long id;
 	@Column
-	private int zustand;
-	@Column
-	protected String name;
+	protected int zustand;
 	@Column
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
-
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	@MapKeyEnumerated
-	protected Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
+	protected BuildingName name;
+	
+	@Transient
+	protected Map<UpgradeLevel, Map<Resources,Long>> upgradeTable = new HashMap<>();
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	protected Set<Minion> workers = new HashSet<>();
 
@@ -51,21 +54,10 @@ public abstract class Building {
 		return level;
 	}
 
-	public BuildingCosts getUpgradeCosts(UpgradeLevel level) {
+	public Map<Resources,Long> getUpgradeCosts(UpgradeLevel level) {
 		if (upgradeTable.containsKey(level)) {
 			return upgradeTable.get(level);
 		}
-
-		return new BuildingCosts();
-
+		return new HashMap<Resources,Long>();
 	}
-
-	public BuildingCosts calculateOutput(Minion minion) {
-		return new BuildingCosts();
-	}
-
-	public Set<Minion> getWorkers() {
-		return workers;
-	}
-
 }

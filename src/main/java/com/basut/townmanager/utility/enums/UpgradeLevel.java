@@ -1,4 +1,4 @@
-package com.basut.townmanager.model;
+package com.basut.townmanager.utility.enums;
 
 import lombok.Getter;
 
