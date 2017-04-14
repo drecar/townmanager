@@ -15,7 +15,7 @@ import com.basut.townmanager.model.buildings.GathererBuilding;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
-import com.basut.townmanager.utility.enums.Resources;
+import com.basut.townmanager.utility.enums.TownResource;
 import com.basut.townmanager.utility.enums.UpgradeLevel;
 
 import lombok.Getter;
@@ -77,7 +77,7 @@ public class TownManager {
 		return false;
 	}
 
-	private boolean checkAndRemoveFromStorage(Map<Resources,Long> buildingCosts) {
+	private boolean checkAndRemoveFromStorage(Map<TownResource,Long> buildingCosts) {
 		if (checkBuildingCosts(buildingCosts)) {
 			buildingCosts.keySet().forEach(key -> town.getStorage().removeResource(key, buildingCosts.get(key)));
 			return true;
@@ -85,7 +85,7 @@ public class TownManager {
 		return false;
 	}
 
-	private boolean checkBuildingCosts(Map<Resources,Long> buildingCosts) {
+	private boolean checkBuildingCosts(Map<TownResource,Long> buildingCosts) {
 		long count = buildingCosts.keySet().stream().filter(key ->town.getStorage().getResource(key)<buildingCosts.get(key)).count();
 		return count < 1;
 	}
@@ -112,4 +112,6 @@ public class TownManager {
 		}
 		minion.setTask(task);
 	}
+
+
 }

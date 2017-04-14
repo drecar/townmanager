@@ -10,30 +10,30 @@ import javax.persistence.Entity;
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.BuildingType;
-import com.basut.townmanager.utility.enums.Resources;
+import com.basut.townmanager.utility.enums.TownResource;
 
 @Entity
 @DiscriminatorValue("Storage")
 public class Storage extends Building {
 	
-	private HashMap<Resources, Long> resourcesInStorage= new HashMap<>();
+	private HashMap<TownResource, Long> resourcesInStorage= new HashMap<>();
 
 	public Storage() {
 		name =BuildingName.STORAGE;
 	}
 	
-	public Long getResource(Resources res) {
+	public Long getResource(TownResource res) {
 		if (resourcesInStorage.containsKey(res)) {
 			return resourcesInStorage.get(res);
 		}
 		return 0L;
 	}
 	
-	public Set<Entry<Resources, Long>> getResources() {
+	public Set<Entry<TownResource, Long>> getResources() {
 		return resourcesInStorage.entrySet();
 	}
 	
-	public void addResource(Resources res, Long resValueToAdd) {
+	public void addResource(TownResource res, Long resValueToAdd) {
 		if (resourcesInStorage.containsKey(res)) {
 			resourcesInStorage.put(res, resourcesInStorage.get(res)+resValueToAdd);
 		} else {
@@ -41,7 +41,7 @@ public class Storage extends Building {
 		}
 	}
 	
-	public void removeResource(Resources res, Long resValueToAdd) {
+	public void removeResource(TownResource res, Long resValueToAdd) {
 		if (resourcesInStorage.containsKey(res)) {
 			Long newStorageValue = resourcesInStorage.get(res)-resValueToAdd;
 			if(newStorageValue<0) {

@@ -37,4 +37,5 @@ public abstract class TownTask {
 	@Transient
 	protected Minion minion;
 	
+	public abstract String getDescription();
 }

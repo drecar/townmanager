@@ -25,4 +25,11 @@ public class GathererTask extends TownTask {
 	
 	@ManyToOne
 	private GathererBuilding buildingAssignment;
+
+	@Override
+	public String getDescription() {
+		return buildingAssignment.getName().getBuildingName();
+	}
+	
+	
 }

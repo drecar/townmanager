@@ -5,7 +5,7 @@ import javax.persistence.Entity;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.utility.enums.BuildingType;
-import com.basut.townmanager.utility.enums.Resources;
+import com.basut.townmanager.utility.enums.TownResource;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -19,7 +19,7 @@ import lombok.ToString;
 @DiscriminatorValue("Gathering")
 @NoArgsConstructor
 public class GathererBuilding extends Building{
-	private Resources producedResource;
+	private TownResource producedResource;
 	
 	@Override
 	public BuildingType getType() {

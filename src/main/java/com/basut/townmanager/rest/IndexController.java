@@ -1,5 +1,6 @@
 package com.basut.townmanager.rest;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -17,8 +18,10 @@ import com.basut.townmanager.form.SendToDungeon;
 import com.basut.townmanager.form.SendWorker;
 import com.basut.townmanager.manager.DungeonManager;
 import com.basut.townmanager.manager.MinionManager;
+import com.basut.townmanager.manager.TaskManager;
 import com.basut.townmanager.manager.TownManager;
 import com.basut.townmanager.model.Building;
+import com.basut.townmanager.model.Dungeon;
 import com.basut.townmanager.model.Minion;
 
 @Controller
@@ -35,6 +38,9 @@ public class IndexController {
 
 	@Autowired
 	private MinionManager minionManager;
+
+	@Autowired
+	private TaskManager taskManager;
 
 	@RequestMapping("/")
 	public String welcome(Map<String, Object> model) {
@@ -73,18 +79,16 @@ public class IndexController {
 
 	@RequestMapping(value = "/workers/sendToDungeon", method = RequestMethod.POST)
 	public String addNewPost(@Valid SendToDungeon sendToDungeon, BindingResult bindingResult, Model model) {
+		Long dungeonId = sendToDungeon.getDungeonId();
+		Dungeon dungeon = dungeonManager.getDungeon(dungeonId);
+		List<Long> minionIdsendToDungeonList = sendToDungeon.getIdleMinionId();
+		List<Minion> minionsToSendToDungeon = minionManager.getMinions(minionIdsendToDungeonList);
+		taskManager.createDungeonTask(minionsToSendToDungeon, dungeon);
+		
 
-		// minions und dungeons aus id bestimmen
 		// minions auf dungeontask schicken
 		// dungeontask
 
-		// Optional<Building> buildingOpt =
-		// townManager.getTown().getBuildings().stream()
-		// .filter(building ->
-		// building.getId().equals((sendToDungeon.getBuildingId()))).findFirst();
-		// if (minionOpt.isPresent() && buildingOpt.isPresent()) {
-		// townManager.sendWorker(minionOpt.get(), buildingOpt.get());
-		// }
 		return "redirect:/dungeons";
 	}
 }

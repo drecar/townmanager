@@ -30,13 +30,19 @@
 							<th>Worker</th>
 							<th>Task</th>
 							<th>Duration</th>
+							<th>health</th>
+							<th>age</th>
+							<th>level</th>
 						</tr>
 					</thead>
 					<tbody>
 						<tr th:each="worker: ${town.workers}">
 							<td th:text="${worker.name}">John</td>
-							<td th:text="${worker.task}">John</td>
+							<td th:text="${worker.task.getDescription()}">John</td>
 							<td th:text="${worker.task.duration}">John</td>
+							<td th:text="${worker.health}">John</td>
+							<td th:text="${worker.age}">John</td>
+							<td th:text="${worker.level}">John</td>
 						</tr>
 					</tbody>
 				</table>

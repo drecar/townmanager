@@ -18,7 +18,7 @@ import javax.persistence.Transient;
 
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.BuildingType;
-import com.basut.townmanager.utility.enums.Resources;
+import com.basut.townmanager.utility.enums.TownResource;
 import com.basut.townmanager.utility.enums.UpgradeLevel;
 
 import lombok.Getter;
@@ -43,7 +43,7 @@ public abstract class Building {
 	protected BuildingName name;
 	
 	@Transient
-	protected Map<UpgradeLevel, Map<Resources,Long>> upgradeTable = new HashMap<>();
+	protected Map<UpgradeLevel, Map<TownResource,Long>> upgradeTable = new HashMap<>();
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	protected Set<Minion> workers = new HashSet<>();
 
@@ -54,10 +54,10 @@ public abstract class Building {
 		return level;
 	}
 
-	public Map<Resources,Long> getUpgradeCosts(UpgradeLevel level) {
+	public Map<TownResource,Long> getUpgradeCosts(UpgradeLevel level) {
 		if (upgradeTable.containsKey(level)) {
 			return upgradeTable.get(level);
 		}
-		return new HashMap<Resources,Long>();
+		return new HashMap<TownResource,Long>();
 	}
 }

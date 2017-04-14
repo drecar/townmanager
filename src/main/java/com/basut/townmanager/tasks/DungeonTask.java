@@ -2,6 +2,9 @@ package com.basut.townmanager.tasks;
 
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
+import javax.persistence.ManyToOne;
+
+import com.basut.townmanager.model.Dungeon;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -20,6 +23,12 @@ import lombok.ToString;
 @Setter
 public class DungeonTask extends TownTask {
 
-	private int dungeonID;
+	@ManyToOne
+	private Dungeon dungeon;
+
+	@Override
+	public String getDescription() {
+		return dungeon.getName();
+	}
 
 }

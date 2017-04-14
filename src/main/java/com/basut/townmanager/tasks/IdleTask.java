@@ -10,4 +10,9 @@ import lombok.ToString;
 @DiscriminatorValue("I")
 public class IdleTask extends TownTask {
 	
+	@Override
+	public String getDescription() {
+		return "idle";
+	}
+
 }

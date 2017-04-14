@@ -1,5 +1,6 @@
 package com.basut.townmanager.manager;
 
+import java.util.Arrays;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +16,14 @@ public class DungeonManager {
 	private IDungeonRepository dungeonRepository;
 
 	public List<Dungeon> getDungeons() {
-
 		return dungeonRepository.findAll();
+	}
+
+	public Dungeon getDungeon(Long dungeonId) {
+		return dungeonRepository.findOne(dungeonId);	
+	}
+	public List<Dungeon> getDungeons(Long... longs) {
+		return dungeonRepository.findAll(Arrays.asList(longs));
 	}
 
 }
