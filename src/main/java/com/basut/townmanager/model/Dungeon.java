@@ -9,6 +9,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
+import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.TownResource;
 
 import lombok.AllArgsConstructor;
@@ -33,6 +37,10 @@ public class Dungeon {
 	private String name;
 	private int difficulty;
 	private int duration;
-	@ElementCollection(fetch = FetchType.EAGER)
+	@ElementCollection
+	@LazyCollection(LazyCollectionOption.FALSE)
 	@Builder.Default private List<TownResource> collectables = new ArrayList<>();
+	
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Builder.Default private List<AttackType> creatureElements = new ArrayList<>();
 }

@@ -1,5 +1,5 @@
 package com.basut.townmanager.utility.enums;
 
 public enum BuildingType {
-	GATHERER, STORAGE, REPAIR, IDLE;
+	GATHERER, STORAGE, REPAIR, IDLE, TOWN;
 }

@@ -34,12 +34,6 @@ public class FireDepartment extends Building {
 	}
 
 	@Override
-	public boolean upgrade() {
-		level = level.nextLevel();
-		return true;
-	}
-
-	@Override
 	public BuildingType getType() {
 		return BuildingType.REPAIR;
 	}

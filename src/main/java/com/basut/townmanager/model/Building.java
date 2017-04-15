@@ -16,6 +16,7 @@ import javax.persistence.Inheritance;
 import javax.persistence.OneToMany;
 import javax.persistence.Transient;
 
+import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.BuildingType;
 import com.basut.townmanager.utility.enums.TownResource;
@@ -37,7 +38,7 @@ public abstract class Building {
 	@GeneratedValue
 	protected Long id;
 	@Column
-	protected int zustand;
+	protected int zustand = TownManagerConstants.MAX_BUILDING_CONDITION;
 	@Column
 	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
 	protected BuildingName name;
@@ -47,7 +48,10 @@ public abstract class Building {
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	protected Set<Minion> workers = new HashSet<>();
 
-	public abstract boolean upgrade();
+	public boolean upgrade() {
+		this.level = level.nextLevel();
+		return true;
+	}
 	public abstract BuildingType getType();
 
 	public UpgradeLevel getUpgradeLevel() {

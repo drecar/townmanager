@@ -27,15 +27,19 @@ public class TickManager {
 	private TaskManager taskManager;
 
 	public void tick() {
-		Storage lager = townManager.getTown().getStorage();
 		
-		calculateBasics(lager);
 		
-		//Taks ausführen
+		calculateBasics();
+		
+		// Execute Tasks
 		taskManager.performTick();
+		
+		//destroy buildings
+		buildingManager.decayBuildings();
 	}
 
-	private void calculateBasics(Storage lager) {
+	private void calculateBasics() {
+		Storage lager = townManager.getTown().getStorage();
 		lager.addResource(TownResource.FOOD, 10L);
 		lager.addResource(TownResource.WOOD, 10L);
 		lager.addResource(TownResource.STONE, 10L);

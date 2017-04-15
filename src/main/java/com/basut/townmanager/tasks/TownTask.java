@@ -31,8 +31,6 @@ public abstract class TownTask {
 	protected boolean isFinished = false;
 	@Column(name = "duration")
 	protected int duration = 4;
-	@Transient
-	protected TownResult townResult;
 	
 	@Transient
 	protected Minion minion;

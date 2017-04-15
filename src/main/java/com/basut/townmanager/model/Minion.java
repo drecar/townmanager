@@ -14,6 +14,7 @@ import javax.persistence.OneToOne;
 
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
+import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.MinionTyp;
 import com.basut.townmanager.utility.enums.Profession;
 import com.basut.townmanager.utility.enums.Skill;
@@ -57,6 +58,14 @@ public class Minion {
 	@Builder.Default
 	private MinionTyp minionTyp = MinionTyp.EISFALKE;
 	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Builder.Default
+	private Map<AttackType,Integer> attackElements = new HashMap<>();
+	
+	@ElementCollection(fetch=FetchType.EAGER)
+	@Builder.Default
+	private Map<AttackType,Integer> defenceElements = new HashMap<>();
+	
 	@Column
 	private Profession profession;
 	
@@ -85,5 +94,13 @@ public class Minion {
 			return 0;
 		}
 		return skillValue;
+	}
+	
+	public double getDefenceValue (AttackType element){
+		Integer defenceElement = defenceElements.get(element);
+		if(defenceElement == null) {
+			return 1;
+		}
+		return (100-defenceElement)/100.0;
 	}
 }

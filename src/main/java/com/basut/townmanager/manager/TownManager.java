@@ -15,6 +15,7 @@ import com.basut.townmanager.model.buildings.GathererBuilding;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
+import com.basut.townmanager.tasks.WorkerTask;
 import com.basut.townmanager.utility.enums.TownResource;
 import com.basut.townmanager.utility.enums.UpgradeLevel;
 
@@ -107,6 +108,9 @@ public class TownManager {
 			task = GathererTask.builder().buildingAssignment((GathererBuilding)building).build();
 			building.getWorkers().add(minion);
 			break;
+		case REPAIR:
+			task = WorkerTask.builder().buildingAssignment(building).build();
+			building.getWorkers().add(minion);
 		default:
 			break;
 		}

@@ -16,11 +16,13 @@ import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.buildings.FireDepartment;
 import com.basut.townmanager.model.buildings.GathererBuilding;
 import com.basut.townmanager.model.buildings.Park;
+import com.basut.townmanager.model.buildings.TownBuilding;
 import com.basut.townmanager.repo.BuildingRepository;
 import com.basut.townmanager.repo.IDungeonRepository;
 import com.basut.townmanager.repo.MinionRepository;
 import com.basut.townmanager.repo.TownRepository;
 import com.basut.townmanager.tasks.GathererTask;
+import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.MinionTyp;
 import com.basut.townmanager.utility.enums.Profession;
@@ -53,22 +55,22 @@ public class SetupManager {
 
 	private void initUpgradeCosts() {
 		//
-//		Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
-//		buildingCosts.setFood(100);
-//		buildingCosts.setWood(200);
-//		buildingCosts.setStone(100);
-//		this.name = TownManagerConstants.HUNTING_HUT;
-		
-//		buildingCosts.setFood(100);
-//		buildingCosts.setWood(100);
-//		buildingCosts.setStone(100);
-//		this.name = TownManagerConstants.LUMBER_JACKS_HUT;
+		// Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
+		// buildingCosts.setFood(100);
+		// buildingCosts.setWood(200);
+		// buildingCosts.setStone(100);
+		// this.name = TownManagerConstants.HUNTING_HUT;
 
-//		buildingCosts.setFood(125);
-//		buildingCosts.setWood(150);
-//		buildingCosts.setStone(100);
-//		this.name = TownManagerConstants.STONEMACON_HUT;
-		
+		// buildingCosts.setFood(100);
+		// buildingCosts.setWood(100);
+		// buildingCosts.setStone(100);
+		// this.name = TownManagerConstants.LUMBER_JACKS_HUT;
+
+		// buildingCosts.setFood(125);
+		// buildingCosts.setWood(150);
+		// buildingCosts.setStone(100);
+		// this.name = TownManagerConstants.STONEMACON_HUT;
+
 	}
 
 	private void createMonsters() {
@@ -83,18 +85,44 @@ public class SetupManager {
 	public void cheatWorker() {
 		Town town = townManager.getTown();
 
-		HashMap<Skill,Integer> basicSkill = new HashMap<>();
+		HashMap<Skill, Integer> basicSkill = new HashMap<>();
 		basicSkill.put(Skill.CURSE, 2);
 		basicSkill.put(Skill.STRENGTH, 5);
 		basicSkill.put(Skill.GATHERING, 1);
-		
+
+		HashMap<AttackType, Integer> merlinAttackElement = new HashMap<>();
+		merlinAttackElement.put(AttackType.FIRE, 50);
+		merlinAttackElement.put(AttackType.ELECTRICAL, 40);
+		merlinAttackElement.put(AttackType.MAGIC, 10);
+
+		HashMap<AttackType, Integer> medusaAttackElement = new HashMap<>();
+		medusaAttackElement.put(AttackType.MAGIC, 60);
+		medusaAttackElement.put(AttackType.PHYSICAL, 20);
+
+		HashMap<AttackType, Integer> cassioAttackElement = new HashMap<>();
+		cassioAttackElement.put(AttackType.MAGIC, 50);
+		cassioAttackElement.put(AttackType.POISON, 50);
+
+		HashMap<AttackType, Integer> merlinDefenceElement = new HashMap<>();
+		merlinDefenceElement.put(AttackType.DARK, -40);
+		merlinDefenceElement.put(AttackType.MAGIC, 100);
+
+		HashMap<AttackType, Integer> medusaDefenceElement = new HashMap<>();
+		medusaDefenceElement.put(AttackType.MAGIC, 60);
+		medusaDefenceElement.put(AttackType.PHYSICAL, 20);
+
+		HashMap<AttackType, Integer> cassioDefenceElement = new HashMap<>();
+		cassioDefenceElement.put(AttackType.MAGIC, 50);
+		cassioDefenceElement.put(AttackType.POISON, 50);
+
 		Optional<Building> huntingHut = town.getBuildings().stream()
 				.filter(building -> (building.getName().equals(BuildingName.HUNTING_HUT))).findFirst();
 		if (huntingHut.isPresent()) {
 			Minion hunter = new Minion();
 			hunter.setName("hunter");
 			town.getWorkers().add(hunter);
-			GathererTask gathererTask = GathererTask.builder().buildingAssignment((GathererBuilding) huntingHut.get()).build();
+			GathererTask gathererTask = GathererTask.builder().buildingAssignment((GathererBuilding) huntingHut.get())
+					.build();
 			hunter.setTask(gathererTask);
 		}
 
@@ -102,14 +130,18 @@ public class SetupManager {
 		workless.setName("Workless");
 		town.getWorkers().add(workless);
 
-		
-		Minion cassiopeia = Minion.builder().name("Cassiopeia").minionTyp(MinionTyp.MEDUSA).profession(Profession.MAGE).skills(basicSkill).build();
-		Minion merlin = Minion.builder().name("Merlin").minionTyp(MinionTyp.SORCERER).profession(Profession.MAGE).skills(basicSkill).build();
-		Minion medusa = Minion.builder().name("Medusa").minionTyp(MinionTyp.MEDUSA).profession(Profession.HUNTER).skills(basicSkill).build();
-		
+		Minion cassiopeia = Minion.builder().name("Cassiopeia").minionTyp(MinionTyp.MEDUSA).profession(Profession.MAGE)
+				.skills(basicSkill).attackElements(cassioAttackElement).defenceElements(cassioDefenceElement).build();
+
+		Minion merlin = Minion.builder().name("Merlin").minionTyp(MinionTyp.SORCERER).profession(Profession.MAGE)
+				.skills(basicSkill).attackElements(merlinAttackElement).defenceElements(merlinDefenceElement).build();
+
+		Minion medusa = Minion.builder().name("Medusa").minionTyp(MinionTyp.MEDUSA).profession(Profession.HUNTER)
+				.skills(basicSkill).attackElements(medusaAttackElement).defenceElements(medusaDefenceElement).build();
+
 		town.getWorkers().add(cassiopeia);
-		town.getWorkers().add(merlin); 
-		town.getWorkers().add(medusa); 
+		town.getWorkers().add(merlin);
+		town.getWorkers().add(medusa);
 		minionRepository.save(townManager.getTown().getWorkers());
 	}
 
@@ -119,15 +151,15 @@ public class SetupManager {
 		GathererBuilding huntingHut = new GathererBuilding();
 		huntingHut.setProducedResource(TownResource.FOOD);
 		huntingHut.setName(BuildingName.HUNTING_HUT);
-		
+
 		GathererBuilding stonemaconHut = new GathererBuilding();
 		stonemaconHut.setProducedResource(TownResource.STONE);
 		stonemaconHut.setName(BuildingName.STONEMACONS_HUT);
-		
+
 		GathererBuilding lumberjackyHut = new GathererBuilding();
 		lumberjackyHut.setProducedResource(TownResource.WOOD);
 		lumberjackyHut.setName(BuildingName.LUMBERJACKS_HUT);
-		
+
 		huntingHut.upgrade();
 
 		stonemaconHut.upgrade();
@@ -139,11 +171,20 @@ public class SetupManager {
 
 		Park park = new Park();
 
+		FireDepartment fireDepartment = new FireDepartment();
+		fireDepartment.upgrade();
+		fireDepartment.upgrade();
+
+		TownBuilding portal = new TownBuilding();
+		portal.setName(BuildingName.PORTAL);
+		portal.upgrade();
+
 		town.getBuildings().add(park);
 		town.getBuildings().add(stonemaconHut);
 		town.getBuildings().add(lumberjackyHut);
 		town.getBuildings().add(huntingHut);
-		town.getBuildings().add(new FireDepartment());
+		town.getBuildings().add(fireDepartment);
+		town.getBuildings().add(portal);
 
 		buildingRepository.save(town.getBuildings());
 	}
@@ -155,11 +196,17 @@ public class SetupManager {
 		field.setDuration(1);
 		field.setDifficulty(1);
 		field.setEncounters(40);
-		field.setCollectables(Lists.newArrayList(TownResource.RUBY));
+		field.setCollectables(Lists.newArrayList(TownResource.RUBY, TownResource.FOOD));
+		field.setCreatureElements(Lists.newArrayList(AttackType.PHYSICAL, AttackType.POISON, AttackType.WATER));
+		
+		
+		Dungeon cave = Dungeon.builder().name("cave").duration(20).difficulty(2).encounters(5)
+				.collectables(Lists.newArrayList(TownResource.COINS, TownResource.STONE))
+				.creatureElements(Lists.newArrayList(AttackType.PHYSICAL,AttackType.DARK, AttackType.BLOOD)).build();
 
-		Dungeon cave = Dungeon.builder().name("cave").duration(20).difficulty(2).encounters(5).collectables(Lists.newArrayList(TownResource.COINS,TownResource.STONE)).build();
-
-		Dungeon forest = Dungeon.builder().name("forest").duration(15).difficulty(3).encounters(5).collectables(Lists.newArrayList(TownResource.FOOD,TownResource.WOOD)).build();
+		Dungeon forest = Dungeon.builder().name("forest").duration(15).difficulty(3).encounters(5)
+				.collectables(Lists.newArrayList(TownResource.FOOD, TownResource.WOOD))
+				.creatureElements(Lists.newArrayList(AttackType.LIGHT, AttackType.PHYSICAL, AttackType.POISON)).build();
 
 		dungeonRepository.save(Lists.newArrayList(field, cave, forest));
 	}
