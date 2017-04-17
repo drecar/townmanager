@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -25,6 +27,7 @@ import lombok.Getter;
 @Getter
 public class TownManager {
 	private Town town = new Town();
+	private static final Logger log = LoggerFactory.getLogger(TownManager.class);
 
 	@Autowired
 	MinionManager minionManager;
@@ -115,6 +118,12 @@ public class TownManager {
 			break;
 		}
 		minion.setTask(task);
+	}
+
+	public void upgradeBuilding(long id) {
+		log.info("Upgraded Buidling with id {}.", id);
+		town.getBuildings().stream().filter(building -> building.getId().equals(id)).findFirst().ifPresent(building -> building.upgrade());
+		
 	}
 
 
