@@ -49,28 +49,7 @@ public class SetupManager {
 
 	@PostConstruct
 	public void initDatabase() {
-		initUpgradeCosts();
 		createMonsters();
-	}
-
-	private void initUpgradeCosts() {
-		//
-		// Map<UpgradeLevel, BuildingCosts> upgradeTable = new HashMap<>();
-		// buildingCosts.setFood(100);
-		// buildingCosts.setWood(200);
-		// buildingCosts.setStone(100);
-		// this.name = TownManagerConstants.HUNTING_HUT;
-
-		// buildingCosts.setFood(100);
-		// buildingCosts.setWood(100);
-		// buildingCosts.setStone(100);
-		// this.name = TownManagerConstants.LUMBER_JACKS_HUT;
-
-		// buildingCosts.setFood(125);
-		// buildingCosts.setWood(150);
-		// buildingCosts.setStone(100);
-		// this.name = TownManagerConstants.STONEMACON_HUT;
-
 	}
 
 	private void createMonsters() {

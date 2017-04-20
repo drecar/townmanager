@@ -21,11 +21,6 @@
 			<h1>
 				<span th:text="'Welcome to ' + ${town.name}">town</span>
 			</h1>
-			<!-- 			<h2> -->
-			<!-- 				<span th:text="'Message: ' + ${message}">NoMessage</span> -->
-			<!-- 			</h2> -->
-			<span th:text="'Town: ' + ${town}">town</span>
-
 
 			<div class="container">
 				<h2>Storage</h2>
@@ -59,6 +54,7 @@
 							<th>Building</th>
 							<th>Level</th>
 							<th>Zustand</th>
+							<th>Resources Needed</th>
 							<th>Upgrade</th>
 						</tr>
 					</thead>
@@ -67,6 +63,7 @@
 							<td th:text="${building.name}">John</td>
 							<td th:text="${building.level.levelValue}">John</td>
 							<td th:text="${building.zustand}">John</td>
+							<td th:text="${@buildingManager.getBuildingCosts(building.name, building.level)}">John</td>
 							<td>
 								<form class="form-inline" action="#"
 									th:action="@{/building/upgrade/{path}(path=${building.id})}"

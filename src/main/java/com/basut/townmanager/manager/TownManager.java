@@ -1,6 +1,7 @@
 package com.basut.townmanager.manager;
 
 import java.util.Map;
+import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
@@ -31,6 +32,9 @@ public class TownManager {
 
 	@Autowired
 	MinionManager minionManager;
+
+	@Autowired
+	BuildingManager buildingManager;
 
 	@Autowired
 	SetupManager setupManager;
@@ -81,7 +85,7 @@ public class TownManager {
 		return false;
 	}
 
-	private boolean checkAndRemoveFromStorage(Map<TownResource,Long> buildingCosts) {
+	private boolean checkAndRemoveFromStorage(Map<TownResource, Long> buildingCosts) {
 		if (checkBuildingCosts(buildingCosts)) {
 			buildingCosts.keySet().forEach(key -> town.getStorage().removeResource(key, buildingCosts.get(key)));
 			return true;
@@ -89,8 +93,9 @@ public class TownManager {
 		return false;
 	}
 
-	private boolean checkBuildingCosts(Map<TownResource,Long> buildingCosts) {
-		long count = buildingCosts.keySet().stream().filter(key ->town.getStorage().getResource(key)<buildingCosts.get(key)).count();
+	private boolean checkBuildingCosts(Map<TownResource, Long> buildingCosts) {
+		long count = buildingCosts.keySet().stream()
+				.filter(key -> town.getStorage().getResource(key) < buildingCosts.get(key)).count();
 		return count < 1;
 	}
 
@@ -108,7 +113,7 @@ public class TownManager {
 		TownTask task = new IdleTask();
 		switch (building.getType()) {
 		case GATHERER:
-			task = GathererTask.builder().buildingAssignment((GathererBuilding)building).build();
+			task = GathererTask.builder().buildingAssignment((GathererBuilding) building).build();
 			building.getWorkers().add(minion);
 			break;
 		case REPAIR:
@@ -120,11 +125,32 @@ public class TownManager {
 		minion.setTask(task);
 	}
 
-	public void upgradeBuilding(long id) {
-		log.info("Upgraded Buidling with id {}.", id);
-		town.getBuildings().stream().filter(building -> building.getId().equals(id)).findFirst().ifPresent(building -> building.upgrade());
-		
+	public boolean upgradeBuilding(long id) {
+		boolean result = false;
+		Optional<Building> buildingOpt = town.getBuildings().stream().filter(building -> building.getId().equals(id))
+				.findFirst();
+		if (buildingOpt.isPresent()) {
+			Building building = buildingOpt.get();
+			if(building.getUpgradeLevel().equals(UpgradeLevel.MAX)) {
+				log.debug("Building ist bereits auf der höchsten Stufe");
+			} else {
+				Map<TownResource, Long> buildingCosts = buildingManager.getBuildingCosts(building.getName(),
+						building.getLevel());
+	
+				long resourcesNotInStorage = buildingCosts.keySet().stream()
+						.filter(key -> buildingCosts.get(key).longValue() > town.getStorage().getResource(key).longValue())
+						.count();
+				if (resourcesNotInStorage > 0) {
+					log.info("Nicht genügend Resourcen um {} upzugraden.", building.getName().getBuildingName());
+				} else {
+					buildingCosts.keySet().stream()
+							.forEach(key -> town.getStorage().removeResource(key, buildingCosts.get(key).longValue()));
+					building.upgrade();
+					result = true;
+					log.info("Upgraded Buidling with id {}.", id);
+				}
+			}
+		}
+		return result;
 	}
-
-
 }

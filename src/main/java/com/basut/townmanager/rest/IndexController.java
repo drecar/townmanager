@@ -31,6 +31,7 @@ import com.basut.townmanager.model.Minion;
 public class IndexController {
 
 	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
+	
 	@Autowired
 	private TownManager townManager;
 
@@ -88,11 +89,6 @@ public class IndexController {
 		List<Long> minionIdsendToDungeonList = sendToDungeon.getIdleMinionId();
 		List<Minion> minionsToSendToDungeon = minionManager.getMinions(minionIdsendToDungeonList);
 		taskManager.createDungeonTask(minionsToSendToDungeon, dungeon);
-		
-
-		// minions auf dungeontask schicken
-		// dungeontask
-
 		return "redirect:/dungeons";
 	}
 	

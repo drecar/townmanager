@@ -1,16 +1,10 @@
 package com.basut.townmanager.utility.enums;
 
-import lombok.Getter;
 
-@Getter
 public enum UpgradeLevel {
-	NOT_BUILT(0), VERY_LOW(1), LOW(2), MIDDLE(3), HIGH(4), MAX(5);
+	NOT_BUILT, VERY_VERY_LOW, VERY_LOW, LOW, MEDIUM, MIDDLE, HIGH, HIGHER, VERY_HIGH, MAX;
 	private static UpgradeLevel[] levels = values();
 	private int levelValue;
-
-	UpgradeLevel(int level) {
-		levelValue = level;
-	}
 
 	public static UpgradeLevel levelSelect(int level) {
 		for (int i = 0; i < levels.length; i++) {
@@ -26,6 +20,10 @@ public enum UpgradeLevel {
 			return MAX;
 		}
 		return levels[(this.ordinal() + 1 % levels.length)];
+	}
+	
+	public int getLevelValue() {
+		return this.ordinal();
 	}
 
 }
