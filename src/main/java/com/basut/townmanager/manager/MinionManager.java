@@ -14,13 +14,14 @@ import com.basut.townmanager.model.Town;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
+import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.AttackType;
 
 @Component
 public class MinionManager {
 
 	private static final Logger log = LoggerFactory.getLogger(MinionManager.class);
-	
+
 	@Autowired
 	private TownManager townManager;
 
@@ -41,18 +42,44 @@ public class MinionManager {
 
 	}
 
+	public void distibuteExpToMinion(Minion minion, int exp) {
+
+		// man nehme Minion und erhaltene Erfahrung
+
+		// Minion bekommt Erfahrung
+		minion.setExp(minion.getExp() + exp);
+		int minionLevel = minion.getLevel();
+		int expForNextLevel = (minionLevel ^ 2 + minionLevel) * minion.getMinionType().getLevelUpFactor() / 2;
+		// Check Level Up
+		if (minion.getExp() >= expForNextLevel) {
+			minion.setExp(minion.getExp() - expForNextLevel);
+			levelUpMinion(minion);
+		}
+	}
+
+	public void levelUpMinion(Minion minion) {
+
+		// man nehme Minion
+		// erhöhe das Level (wenn nicht max level)
+		if (minion.getLevel() < TownManagerConstants.MAX_LEVEL) {
+			minion.setLevel(minion.getLevel() + 1);
+
+			// erhöhe Attribute etc
+		}
+	}
+
 	public List<Minion> getIdleMinions() {
-		return townManager.getTown().getWorkers().stream().filter(minion -> minion.getTask() instanceof IdleTask)
+		return townManager.getTown().getMinions().stream().filter(minion -> minion.getTask() instanceof IdleTask)
 				.collect(Collectors.toList());
 	}
 
 	public List<Minion> getMinions(List<Long> minionIdsendToDungeonList) {
-		return townManager.getTown().getWorkers().stream()
+		return townManager.getTown().getMinions().stream()
 				.filter(minion -> minionIdsendToDungeonList.contains(minion.getId())).collect(Collectors.toList());
 	}
 
 	public List<Minion> getMinionFromTask(TownTask task) {
-		return townManager.getTown().getWorkers().stream().filter(minion -> minion.getTask().equals(task))
+		return townManager.getTown().getMinions().stream().filter(minion -> minion.getTask().equals(task))
 				.collect(Collectors.toList());
 	}
 
@@ -62,19 +89,20 @@ public class MinionManager {
 			minion.setHealth(minion.getMaxHealth());
 		}
 	}
-	
+
 	public void dealDirectDamageMinion(Minion minion, int damage) {
-		minion.setHealth(minion.getHealth() -damage);
+		minion.setHealth(minion.getHealth() - damage);
 		if (minion.getHealth() <= 0) {
 			minion.setHealth(0);
 		}
 	}
 
 	public void dealDamageToMinion(Minion minion, Map<AttackType, Integer> damageForMinion) {
-			damageForMinion.keySet().stream().forEach(key ->{
-				int damageOfType = (int) (damageForMinion.get(key)*minion.getDefenceValue(key));
-				dealDirectDamageMinion(minion, damageOfType);
-				log.info("Minion{} bekam {} {} Schaden. Remaining health: {}",minion.getName(), damageOfType, key, minion.getHealth() );
-			});
+		damageForMinion.keySet().stream().forEach(key -> {
+			int damageOfType = (int) (damageForMinion.get(key) * minion.getDefenceValue(key));
+			dealDirectDamageMinion(minion, damageOfType);
+			log.info("Minion{} bekam {} {} Schaden. Remaining health: {}", minion.getName(), damageOfType, key,
+					minion.getHealth());
+		});
 	}
 }

@@ -24,7 +24,7 @@ import com.basut.townmanager.repo.TownRepository;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.BuildingName;
-import com.basut.townmanager.utility.enums.MinionTyp;
+import com.basut.townmanager.utility.enums.MinionType;
 import com.basut.townmanager.utility.enums.Profession;
 import com.basut.townmanager.utility.enums.Skill;
 import com.basut.townmanager.utility.enums.TownResource;
@@ -58,7 +58,7 @@ public class SetupManager {
 		cheatWorker();
 
 		List<Minion> minions = minionRepository.findAll();
-		townManager.getTown().setWorkers(minions);
+		townManager.getTown().setMinions(minions);
 	}
 
 	public void cheatWorker() {
@@ -99,7 +99,7 @@ public class SetupManager {
 		if (huntingHut.isPresent()) {
 			Minion hunter = new Minion();
 			hunter.setName("hunter");
-			town.getWorkers().add(hunter);
+			town.getMinions().add(hunter);
 			GathererTask gathererTask = GathererTask.builder().buildingAssignment((GathererBuilding) huntingHut.get())
 					.build();
 			hunter.setTask(gathererTask);
@@ -107,21 +107,22 @@ public class SetupManager {
 
 		Minion workless = new Minion();
 		workless.setName("Workless");
-		town.getWorkers().add(workless);
+		town.getMinions().add(workless);
 
-		Minion cassiopeia = Minion.builder().name("Cassiopeia").minionTyp(MinionTyp.MEDUSA).profession(Profession.MAGE)
-				.skills(basicSkill).attackElements(cassioAttackElement).defenceElements(cassioDefenceElement).build();
+		Minion cassiopeia = Minion.builder().name("Cassiopeia").minionType(MinionType.MEDUSA)
+				.profession(Profession.MAGE).skills(basicSkill).attackElements(cassioAttackElement)
+				.defenceElements(cassioDefenceElement).build();
 
-		Minion merlin = Minion.builder().name("Merlin").minionTyp(MinionTyp.SORCERER).profession(Profession.MAGE)
+		Minion merlin = Minion.builder().name("Merlin").minionType(MinionType.SORCERER).profession(Profession.MAGE)
 				.skills(basicSkill).attackElements(merlinAttackElement).defenceElements(merlinDefenceElement).build();
 
-		Minion medusa = Minion.builder().name("Medusa").minionTyp(MinionTyp.MEDUSA).profession(Profession.HUNTER)
+		Minion medusa = Minion.builder().name("Medusa").minionType(MinionType.MEDUSA).profession(Profession.HUNTER)
 				.skills(basicSkill).attackElements(medusaAttackElement).defenceElements(medusaDefenceElement).build();
 
-		town.getWorkers().add(cassiopeia);
-		town.getWorkers().add(merlin);
-		town.getWorkers().add(medusa);
-		minionRepository.save(townManager.getTown().getWorkers());
+		town.getMinions().add(cassiopeia);
+		town.getMinions().add(merlin);
+		town.getMinions().add(medusa);
+		minionRepository.save(townManager.getTown().getMinions());
 	}
 
 	public void cheatBasicBuildings() {
@@ -177,11 +178,10 @@ public class SetupManager {
 		field.setEncounters(40);
 		field.setCollectables(Lists.newArrayList(TownResource.RUBY, TownResource.FOOD));
 		field.setCreatureElements(Lists.newArrayList(AttackType.PHYSICAL, AttackType.POISON, AttackType.WATER));
-		
-		
+
 		Dungeon cave = Dungeon.builder().name("cave").duration(20).difficulty(2).encounters(5)
 				.collectables(Lists.newArrayList(TownResource.COINS, TownResource.STONE))
-				.creatureElements(Lists.newArrayList(AttackType.PHYSICAL,AttackType.DARK, AttackType.BLOOD)).build();
+				.creatureElements(Lists.newArrayList(AttackType.PHYSICAL, AttackType.DARK, AttackType.BLOOD)).build();
 
 		Dungeon forest = Dungeon.builder().name("forest").duration(15).difficulty(3).encounters(5)
 				.collectables(Lists.newArrayList(TownResource.FOOD, TownResource.WOOD))

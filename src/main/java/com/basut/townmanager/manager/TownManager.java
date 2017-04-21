@@ -109,7 +109,7 @@ public class TownManager {
 	 * @param minion
 	 * @param building
 	 */
-	public void sendWorker(Minion minion, Building building) {
+	public void sendMinion(Minion minion, Building building) {
 		TownTask task = new IdleTask();
 		switch (building.getType()) {
 		case GATHERER:
