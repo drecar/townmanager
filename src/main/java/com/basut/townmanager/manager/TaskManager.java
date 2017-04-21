@@ -20,6 +20,7 @@ import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.tasks.WorkerTask;
+import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.BuildingType;
 import com.basut.townmanager.utility.enums.Skill;
@@ -65,6 +66,7 @@ public class TaskManager {
 		switch (type) {
 		case REPAIR:
 			buildingManager.restoreBuildings(workerTask.getBuildingAssignment().getLevel().getLevelValue(), minion);
+			workerTask.setDuration(100);
 			break;
 		default:
 			break;
@@ -91,9 +93,10 @@ public class TaskManager {
 						sb.append("Nichts passiert!").append("\n");
 					} else if (nextInt < 4000) {
 						log.info("Gatheringevent");
-						int sumOfGatheringSkills = minionsFromTask.stream().mapToInt(min -> min.getSkillValue((Skill.GATHERING))).sum();
-						distributeResources(dungeonTask.getDungeon(),minionsFromTask, sumOfGatheringSkills);
-						
+						int sumOfGatheringSkills = minionsFromTask.stream()
+								.mapToInt(min -> min.getSkillValue((Skill.GATHERING))).sum();
+						distributeResources(dungeonTask.getDungeon(), minionsFromTask, sumOfGatheringSkills);
+
 					} else if (nextInt < 7500) {
 
 						fightevent(dungeonTask.getDungeon(), minionsFromTask);
@@ -118,17 +121,14 @@ public class TaskManager {
 		}
 	}
 
-	private void distributeResources(Dungeon dungeon,List<Minion> minionsFromTask, int collectingFactor) {
-		List<TownResource> collectables = dungeon.getCollectables();		
-		int numberOfCollectables = dungeon.getDifficulty()
-				* collectingFactor;
+	private void distributeResources(Dungeon dungeon, List<Minion> minionsFromTask, int collectingFactor) {
+		List<TownResource> collectables = dungeon.getCollectables();
+		int numberOfCollectables = dungeon.getDifficulty() * collectingFactor;
 		int nextInt = Math.abs(random.nextInt());
 		townManager.getTown().getStorage().addResource(collectables.get(nextInt % collectables.size()),
 				(long) numberOfCollectables);
-		log.info("Adding {}{} to Storage", numberOfCollectables, collectables.get(nextInt % collectables.size())
-				);
+		log.info("Adding {}{} to Storage", numberOfCollectables, collectables.get(nextInt % collectables.size()));
 	}
-	
 
 	private void fightevent(Dungeon dungeon, List<Minion> minions) {
 		// Gegnergruppe generieren
@@ -148,7 +148,7 @@ public class TaskManager {
 			// Schaden bestimmen
 			// Schaden Spielergruppe
 			Map<AttackType, Integer> damage1 = new HashMap<>();
-			minions.stream().filter(minion ->minion.getHealth()>0).forEach(minion -> {
+			minions.stream().filter(minion -> minion.getHealth() > 0).forEach(minion -> {
 				minion.getAttackElements().keySet().stream().forEach(key -> {
 					if (damage1.containsKey(key)) {
 						damage1.put(key, damage1.get(key) + minion.getAttackElements().get(key));
@@ -161,7 +161,8 @@ public class TaskManager {
 
 			// Distribute damage to minions according to their resistance and
 			// maxhealth
-			int totalHealth1 = minions.stream().filter(minion -> minion.getHealth()>0).mapToInt(minion -> minion.getMaxHealth()).sum();
+			int totalHealth1 = minions.stream().filter(minion -> minion.getHealth() > 0)
+					.mapToInt(minion -> minion.getMaxHealth()).sum();
 			minions.stream().forEach(minion -> {
 				distributeDamageAccordingly(damageFromEnemy, totalHealth1, minion);
 			});
@@ -179,15 +180,16 @@ public class TaskManager {
 			log.info("End of Round.");
 		}
 		if (teamRemains) {
-			distributeResources(dungeon, minions, dungeon.getDifficulty()*50);
-			distributeResources(dungeon, minions, dungeon.getDifficulty()*50);
-			//exp&lvup
+			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50);
+			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50);
+			// exp&lvup
 		}
 
 	}
 
-	private void distributeDamageAccordingly(Map<AttackType, Integer> damageFromEnemy, int totalHealth1, Minion minion) {
-		double factorMaxDamage = (double) minion.getMaxHealth()/totalHealth1;
+	private void distributeDamageAccordingly(Map<AttackType, Integer> damageFromEnemy, int totalHealth1,
+			Minion minion) {
+		double factorMaxDamage = (double) minion.getMaxHealth() / totalHealth1;
 		Map<AttackType, Integer> damageForMinion = new HashMap<>();
 		damageFromEnemy.keySet().stream()
 				.forEach(key -> damageForMinion.put(key, (int) (factorMaxDamage * damageFromEnemy.get(key))));
@@ -203,13 +205,12 @@ public class TaskManager {
 	}
 
 	private void performGathererTask(GathererTask townTask, Minion minion) {
-		if (townTask.getDuration() < 1) {
-			int levelOfBuilding = townTask.getBuildingAssignment().getUpgradeLevel().getLevelValue();
-			TownResource res = townTask.getBuildingAssignment().getProducedResource();
-			townManager.getTown().getStorage().addResource(res,
-					(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
-			townTask.setFinished(true);
-		}
+		int levelOfBuilding = townTask.getBuildingAssignment().getUpgradeLevel().getLevelValue();
+		TownResource res = townTask.getBuildingAssignment().getProducedResource();
+		townManager.getTown().getStorage().addResource(res,
+				(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
+		townTask.setDuration(TownManagerConstants.ENDLESS_DURATION);
+
 	}
 
 	public void createDungeonTask(List<Minion> minionsToSendToDungeon, Dungeon dungeon) {

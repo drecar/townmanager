@@ -10,4 +10,5 @@ public class TownManagerConstants {
 	public static final int MAX_BUILDING_CONDITION = 100000; 
 	public static final Long STORAGE_LIMIT = 100000L;
 	public static final String PORTAL = "Portal";
+	public static final int ENDLESS_DURATION = 100;
 }

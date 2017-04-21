@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
+import com.basut.townmanager.tasks.DungeonTask;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
@@ -37,12 +38,8 @@ public class MinionManager {
 		minion.setTask(new IdleTask());
 	}
 
-	public void restoreHealth(Minion minion, long health) {
-
-	}
-
-	public List<Minion> getIdleMinions() {
-		return townManager.getTown().getWorkers().stream().filter(minion -> minion.getTask() instanceof IdleTask)
+	public List<Minion> getAvailableMinions() {
+		return townManager.getTown().getWorkers().stream().filter(minion -> !(minion.getTask() instanceof DungeonTask))
 				.collect(Collectors.toList());
 	}
 
@@ -76,5 +73,9 @@ public class MinionManager {
 				dealDirectDamageMinion(minion, damageOfType);
 				log.info("Minion{} bekam {} {} Schaden. Remaining health: {}",minion.getName(), damageOfType, key, minion.getHealth() );
 			});
+	}
+
+	public void letMionionsAge() {
+		townManager.getTown().getWorkers().forEach(minion -> minion.setAge(minion.getAge()+1));
 	}
 }

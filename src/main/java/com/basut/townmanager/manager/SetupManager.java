@@ -97,16 +97,14 @@ public class SetupManager {
 		Optional<Building> huntingHut = town.getBuildings().stream()
 				.filter(building -> (building.getName().equals(BuildingName.HUNTING_HUT))).findFirst();
 		if (huntingHut.isPresent()) {
-			Minion hunter = new Minion();
-			hunter.setName("hunter");
+			Minion hunter = Minion.builder().name("hunter").build();
 			town.getWorkers().add(hunter);
 			GathererTask gathererTask = GathererTask.builder().buildingAssignment((GathererBuilding) huntingHut.get())
 					.build();
 			hunter.setTask(gathererTask);
 		}
 
-		Minion workless = new Minion();
-		workless.setName("Workless");
+		Minion workless = Minion.builder().name("Workless").build();
 		town.getWorkers().add(workless);
 
 		Minion cassiopeia = Minion.builder().name("Cassiopeia").minionTyp(MinionTyp.MEDUSA).profession(Profession.MAGE)

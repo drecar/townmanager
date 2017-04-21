@@ -10,6 +10,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 
 import com.basut.townmanager.model.Minion;
+import com.basut.townmanager.utility.TownManagerConstants;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -27,10 +28,10 @@ public abstract class TownTask {
 	@Id
 	@GeneratedValue
 	Long id;
-	@Column(name="isFinished")
+	@Column
 	protected boolean isFinished = false;
-	@Column(name = "duration")
-	protected int duration = 4;
+	@Column
+	protected int duration = TownManagerConstants.ENDLESS_DURATION;
 	
 	@Transient
 	protected Minion minion;
