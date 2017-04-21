@@ -31,5 +31,5 @@ public class Town {
 	@OneToMany(cascade=CascadeType.ALL)
 	private List<Building> buildings= new ArrayList<>();
 	@OneToMany(cascade=CascadeType.ALL)
-	private List<Minion> workers = new ArrayList<>();	
+	private List<Minion> minions = new ArrayList<>();	
 }

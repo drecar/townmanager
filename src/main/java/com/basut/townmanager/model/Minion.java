@@ -15,7 +15,7 @@ import javax.persistence.OneToOne;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.utility.enums.AttackType;
-import com.basut.townmanager.utility.enums.MinionTyp;
+import com.basut.townmanager.utility.enums.MinionType;
 import com.basut.townmanager.utility.enums.Profession;
 import com.basut.townmanager.utility.enums.Skill;
 
@@ -39,68 +39,70 @@ public class Minion {
 
 	@Column
 	private String name;
-	
+
 	@Column
 	@Builder.Default
 	private int age = 0;
-	
+
 	@Column
 	@Builder.Default
 	private int level = 1;
 
 	@Column
-	@Builder.Default private int health = 100;
-	
-	@Column
-	@Builder.Default private int maxHealth = 100;
-	
+	@Builder.Default
+	private int health = 100;
+
 	@Column
 	@Builder.Default
-	private MinionTyp minionTyp = MinionTyp.EISFALKE;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
+	private int maxHealth = 100;
+
+	@Column
 	@Builder.Default
-	private Map<AttackType,Integer> attackElements = new HashMap<>();
-	
-	@ElementCollection(fetch=FetchType.EAGER)
+	private MinionType minionType = MinionType.EISFALKE;
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
-	private Map<AttackType,Integer> defenceElements = new HashMap<>();
-	
+	private Map<AttackType, Integer> attackElements = new HashMap<>();
+
+	@ElementCollection(fetch = FetchType.EAGER)
+	@Builder.Default
+	private Map<AttackType, Integer> defenceElements = new HashMap<>();
+
 	@Column
 	private Profession profession;
-	
+
 	@Column
 	@Builder.Default
 	private int exp = 0;
-	
-	@ElementCollection(fetch=FetchType.EAGER)
+
+	@ElementCollection(fetch = FetchType.EAGER)
 	@Builder.Default
-	private Map<Skill,Integer> skills = new HashMap<>();
-	
-	@OneToOne(cascade=CascadeType.ALL)
+	private Map<Skill, Integer> skills = new HashMap<>();
+
+	@OneToOne(cascade = CascadeType.ALL)
 	@Builder.Default
 	private TownTask task = new IdleTask();
-	
+
 	public TownTask getTask() {
-		if(task == null) {
+		if (task == null) {
 			return new IdleTask();
 		}
 		return task;
 	}
-	
+
 	public int getSkillValue(Skill skill) {
 		Integer skillValue = skills.get(skill);
-		if(skillValue == null) {
+		if (skillValue == null) {
 			return 0;
 		}
 		return skillValue;
 	}
-	
-	public double getDefenceValue (AttackType element){
+
+	public double getDefenceValue(AttackType element) {
 		Integer defenceElement = defenceElements.get(element);
-		if(defenceElement == null) {
+		if (defenceElement == null) {
 			return 1;
 		}
-		return (100-defenceElement)/100.0;
+		return (100 - defenceElement) / 100.0;
 	}
 }

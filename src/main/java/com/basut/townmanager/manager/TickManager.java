@@ -37,7 +37,7 @@ public class TickManager {
 		buildingManager.decayBuildings();
 		
 		// let the minions age
-		minionManager.letMionionsAge();
+		minionManager.letMinionsAge();
 	}
 
 	private void calculateBasics() {

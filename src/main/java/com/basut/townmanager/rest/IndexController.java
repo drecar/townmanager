@@ -31,7 +31,7 @@ import com.basut.townmanager.model.Minion;
 public class IndexController {
 
 	private static final Logger log = LoggerFactory.getLogger(IndexController.class);
-	
+
 	@Autowired
 	private TownManager townManager;
 
@@ -72,7 +72,7 @@ public class IndexController {
 
 	@RequestMapping(value = "/workers/sendWorker", method = RequestMethod.POST)
 	public String addNewPost(@Valid SendWorker sendWorker, BindingResult bindingResult, Model model) {
-		Optional<Minion> minionOpt = townManager.getTown().getWorkers().stream()
+		Optional<Minion> minionOpt = townManager.getTown().getMinions().stream()
 				.filter(minion -> minion.getId().equals(sendWorker.getIdleMinionId())).findFirst();
 		if(minionOpt.isPresent() && sendWorker.getBuildingId() == -1) {
 			minionManager.resetTask(minionOpt.get());
@@ -80,7 +80,7 @@ public class IndexController {
 			Optional<Building> buildingOpt = townManager.getTown().getBuildings().stream()
 					.filter(building -> building.getId().equals((sendWorker.getBuildingId()))).findFirst();
 			if (minionOpt.isPresent() && buildingOpt.isPresent()) {
-				townManager.sendWorker(minionOpt.get(), buildingOpt.get());
+				townManager.sendMinion(minionOpt.get(), buildingOpt.get());
 			}
 		}
 		return "redirect:/workers";
@@ -95,9 +95,9 @@ public class IndexController {
 		taskManager.createDungeonTask(minionsToSendToDungeon, dungeon);
 		return "redirect:/dungeons";
 	}
-	
+
 	@RequestMapping(value = "/building/upgrade/{id}")
-	public String upgradeBuilding(@PathVariable(value="id") long id, Model model) {
+	public String upgradeBuilding(@PathVariable(value = "id") long id, Model model) {
 		townManager.upgradeBuilding(id);
 		return "redirect:/";
 	}
