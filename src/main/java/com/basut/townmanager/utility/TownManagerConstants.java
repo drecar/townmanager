@@ -12,4 +12,6 @@ public class TownManagerConstants {
 	public static final String PORTAL = "Portal";
 	public static final short MAX_LEVEL = 100;
 	public static final int ENDLESS_DURATION = 100;
+	public static final int GATHERING_EXP_FACTOR = 10;
+	public static final int DUNGEON_FIGHTING_EXP_FACTOR = 50;
 }

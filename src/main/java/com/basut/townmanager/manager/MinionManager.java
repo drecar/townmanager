@@ -39,14 +39,13 @@ public class MinionManager {
 		minion.setTask(new IdleTask());
 	}
 
-	public void distibuteExpToMinion(Minion minion, int exp) {
+	public void distributeExpToMinion(Minion minion, int exp) {
 
 		// man nehme Minion und erhaltene Erfahrung
 
 		// Minion bekommt Erfahrung
 		minion.setExp(minion.getExp() + exp);
-		int minionLevel = minion.getLevel();
-		int expForNextLevel = (minionLevel ^ 2 + minionLevel) * minion.getMinionType().getLevelUpFactor() / 2;
+		int expForNextLevel = getExpForNextLevel(minion);
 		// Check Level Up
 		if (minion.getExp() >= expForNextLevel) {
 			minion.setExp(minion.getExp() - expForNextLevel);
@@ -60,6 +59,7 @@ public class MinionManager {
 		// erhöhe das Level (wenn nicht max level)
 		if (minion.getLevel() < TownManagerConstants.MAX_LEVEL) {
 			minion.setLevel(minion.getLevel() + 1);
+			log.info("{} reached Level {}", minion.getName(), minion.getLevel());
 
 			// erhöhe Attribute etc
 		}
@@ -103,7 +103,14 @@ public class MinionManager {
 		});
 	}
 
-	public void letMionionsAge() {
+	public int getExpForNextLevel(Minion minion) {
+		int minionLevel = minion.getLevel();
+		int expForNextLevel = (minionLevel ^ 2 + minionLevel) * minion.getMinionType().getLevelUpFactor() / 2;
+
+		return expForNextLevel;
+	}
+
+	public void letMinionsAge() {
 		townManager.getTown().getMinions().forEach(minion -> minion.setAge(minion.getAge() + 1));
 	}
 }

@@ -14,7 +14,7 @@ public class MinionManagerTest {
 
 		Minion minion = Minion.builder().level(1).minionType(MinionType.SORCERER).build();
 		MinionManager minionManager = new MinionManager();
-		minionManager.distibuteExpToMinion(minion, 250);
+		minionManager.distributeExpToMinion(minion, 250);
 
 		assertEquals(2, minion.getLevel());
 		assertEquals(100, minion.getExp());

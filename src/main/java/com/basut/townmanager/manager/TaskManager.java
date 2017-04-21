@@ -183,6 +183,11 @@ public class TaskManager {
 			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50);
 			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50);
 			// exp&lvup
+
+			minions.stream().filter(minion -> minion.getHealth() > 0)
+					.forEach(minion -> minionManager.distributeExpToMinion(minion,
+							dungeon.getDifficulty() * TownManagerConstants.DUNGEON_FIGHTING_EXP_FACTOR));
+
 		}
 
 	}
@@ -210,6 +215,8 @@ public class TaskManager {
 		townManager.getTown().getStorage().addResource(res,
 				(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
 		townTask.setDuration(TownManagerConstants.ENDLESS_DURATION);
+		minionManager.distributeExpToMinion(minion, townTask.getBuildingAssignment().getLevel().getLevelValue()
+				* TownManagerConstants.GATHERING_EXP_FACTOR);
 
 	}
 
@@ -224,9 +231,6 @@ public class TaskManager {
 	public void performTick() {
 		// perform tick
 		townManager.getTown().getMinions().stream().forEach(minion -> performTownTask(minion.getTask(), minion));
-
-		// age Minion
-		townManager.getTown().getMinions().stream().forEach(minion -> minion.setAge(minion.getAge() + 1));
 
 		// put minion back to idle
 		List<Minion> minionsWithFinishedTasks = townManager.getTown().getMinions().stream()
