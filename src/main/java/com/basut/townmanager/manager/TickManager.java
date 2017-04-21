@@ -28,7 +28,6 @@ public class TickManager {
 
 	public void tick() {
 		
-		
 		calculateBasics();
 		
 		// Execute Tasks
@@ -36,6 +35,9 @@ public class TickManager {
 		
 		//destroy buildings
 		buildingManager.decayBuildings();
+		
+		// let the minions age
+		minionManager.letMionionsAge();
 	}
 
 	private void calculateBasics() {

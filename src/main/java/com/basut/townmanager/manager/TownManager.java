@@ -1,7 +1,9 @@
 package com.basut.townmanager.manager;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import javax.annotation.PostConstruct;
 
@@ -19,8 +21,10 @@ import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.tasks.WorkerTask;
+import com.basut.townmanager.utility.enums.BuildingType;
 import com.basut.townmanager.utility.enums.TownResource;
 import com.basut.townmanager.utility.enums.UpgradeLevel;
+import com.google.common.collect.Lists;
 
 import lombok.Getter;
 
@@ -153,4 +157,10 @@ public class TownManager {
 		}
 		return result;
 	}
+	
+	public List<Building> getBuildingsToWorkAt() {
+		List<BuildingType> buildingTypesToWorkAt = Lists.newArrayList(BuildingType.REPAIR,BuildingType.GATHERER);
+		return town.getBuildings().stream().filter(building -> buildingTypesToWorkAt.contains(building.getType())).collect(Collectors.toList());
+	}
+	
 }

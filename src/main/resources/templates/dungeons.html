@@ -29,12 +29,10 @@
 	</nav>
 
 	<div class="container">
-
 		<div class="starter-template">
 			<h1>
-				<span th:text="'available dungeons:'">town</span>
+				<span th:text="'Available dungeons:'">town</span>
 			</h1>
-			<span th:text="${dungeons}"></span>
 			<div class="container">
 				<h2>Dungeon</h2>
 				<table class="table table-striped">
@@ -56,36 +54,33 @@
 					</tbody>
 				</table>
 			</div>
-
+		
+			<div class="container">
+				<form class="form-horizontal" action="#"
+					th:action="@{/workers/sendToDungeon}" th:object="${sendToDungeon}"
+					method="post">
+					<div class="form-group">
+						<label for="dungeon">Select Dungeon:</label> <select
+							class="form-control" th:field="*{dungeonId}">
+							<option th:each="dungeon: ${dungeons}" th:value="${dungeon.id}"
+								th:text="${dungeon.name}"></option>
+						</select>
+					</div>
+					<div class="form-group">
+						<label>Select Minions</label>
+						<div class="checkbox" th:each="minion, stat: ${idleMinions}">
+							<label><input th:value="${minion.id}"
+								th:text="${minion.name}" type="checkbox"
+								th:field="*{idleMinionId}"></input></label>
+						</div>
+						<button type="submit" class="btn btn-default">Send to
+							Dungeon!</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	</div>
 	<!-- /.container -->
-
-	<div class="container">
-		<div class="starter-template">
-			<form class="form-horizontal" action="#"
-				th:action="@{/workers/sendToDungeon}" th:object="${sendToDungeon}"
-				method="post">
-				<div class="form-group">
-					<label for="dungeon">Select Dungeon:</label> <select
-						class="form-control" th:field="*{dungeonId}">
-						<option th:each="dungeon: ${dungeons}" th:value="${dungeon.id}"
-							th:text="${dungeon.name}"></option>
-					</select>
-				</div>
-				<div class="form-group">
-					<label>Select Minions</label>
-					<div class="checkbox" th:each="minion, stat: ${idleMinions}">
-						<label><input th:value="${minion.id}"
-							th:text="${minion.name}" type="checkbox"
-							th:field="*{idleMinionId}"></input></label>
-					</div>
-					<button type="submit" class="btn btn-default">Send to
-						Dungeon!</button>
-				</div>
-			</form>
-		</div>
-	</div>
 	<script type="text/javascript"
 		src="webjars/bootstrap/3.3.7/js/bootstrap.min.js"></script>
 </body>

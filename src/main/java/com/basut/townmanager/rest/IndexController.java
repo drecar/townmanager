@@ -57,14 +57,14 @@ public class IndexController {
 	@RequestMapping("/dungeons")
 	public String dungeons(Map<String, Object> model) {
 		model.put("dungeons", dungeonManager.getDungeons());
-		model.put("idleMinions", minionManager.getIdleMinions());
+		model.put("idleMinions", minionManager.getAvailableMinions());
 		model.put("sendToDungeon", new SendToDungeon());
 		return "dungeons";
 	}
 
 	@RequestMapping("/workers")
 	public String worker(Map<String, Object> model) {
-		model.put("idleMinions", minionManager.getIdleMinions());
+		model.put("idleMinions", minionManager.getAvailableMinions());
 		model.put("town", townManager.getTown());
 		model.put("sendWorker", new SendWorker());
 		return "workers";

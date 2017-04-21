@@ -20,6 +20,7 @@ import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.tasks.WorkerTask;
+import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.BuildingType;
 import com.basut.townmanager.utility.enums.Skill;
@@ -65,6 +66,7 @@ public class TaskManager {
 		switch (type) {
 		case REPAIR:
 			buildingManager.restoreBuildings(workerTask.getBuildingAssignment().getLevel().getLevelValue(), minion);
+			workerTask.setDuration(100);
 			break;
 		default:
 			break;
@@ -203,13 +205,12 @@ public class TaskManager {
 	}
 
 	private void performGathererTask(GathererTask townTask, Minion minion) {
-		if (townTask.getDuration() < 1) {
-			int levelOfBuilding = townTask.getBuildingAssignment().getUpgradeLevel().getLevelValue();
-			TownResource res = townTask.getBuildingAssignment().getProducedResource();
-			townManager.getTown().getStorage().addResource(res,
-					(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
-			townTask.setFinished(true);
-		}
+		int levelOfBuilding = townTask.getBuildingAssignment().getUpgradeLevel().getLevelValue();
+		TownResource res = townTask.getBuildingAssignment().getProducedResource();
+		townManager.getTown().getStorage().addResource(res,
+				(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
+		townTask.setDuration(TownManagerConstants.ENDLESS_DURATION);
+
 	}
 
 	public void createDungeonTask(List<Minion> minionsToSendToDungeon, Dungeon dungeon) {
