@@ -74,10 +74,14 @@ public class IndexController {
 	public String addNewPost(@Valid SendWorker sendWorker, BindingResult bindingResult, Model model) {
 		Optional<Minion> minionOpt = townManager.getTown().getWorkers().stream()
 				.filter(minion -> minion.getId().equals(sendWorker.getIdleMinionId())).findFirst();
-		Optional<Building> buildingOpt = townManager.getTown().getBuildings().stream()
-				.filter(building -> building.getId().equals((sendWorker.getBuildingId()))).findFirst();
-		if (minionOpt.isPresent() && buildingOpt.isPresent()) {
-			townManager.sendWorker(minionOpt.get(), buildingOpt.get());
+		if(minionOpt.isPresent() && sendWorker.getBuildingId() == -1) {
+			minionManager.resetTask(minionOpt.get());
+		} else {
+			Optional<Building> buildingOpt = townManager.getTown().getBuildings().stream()
+					.filter(building -> building.getId().equals((sendWorker.getBuildingId()))).findFirst();
+			if (minionOpt.isPresent() && buildingOpt.isPresent()) {
+				townManager.sendWorker(minionOpt.get(), buildingOpt.get());
+			}
 		}
 		return "redirect:/workers";
 	}

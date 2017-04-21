@@ -61,7 +61,7 @@
 					<tbody>
 						<tr th:each="building: ${town.buildings}">
 							<td th:text="${building.name}">John</td>
-							<td th:text="${building.level.levelValue}">John</td>
+							<td th:text="${building.level}">John</td>
 							<td th:text="${building.zustand}">John</td>
 							<td th:text="${@buildingManager.getBuildingCosts(building.name, building.level)}">John</td>
 							<td>

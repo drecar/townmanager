@@ -20,7 +20,6 @@ import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.BuildingType;
 import com.basut.townmanager.utility.enums.TownResource;
-import com.basut.townmanager.utility.enums.UpgradeLevel;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -40,25 +39,24 @@ public abstract class Building {
 	@Column
 	protected int zustand = TownManagerConstants.MAX_BUILDING_CONDITION;
 	@Column
-	protected UpgradeLevel level = UpgradeLevel.NOT_BUILT;
+	protected int level = 0;
 	protected BuildingName name;
 	
 	@Transient
-	protected Map<UpgradeLevel, Map<TownResource,Long>> upgradeTable = new HashMap<>();
+	protected Map<Integer, Map<TownResource,Long>> upgradeTable = new HashMap<>();
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	protected Set<Minion> workers = new HashSet<>();
 
 	public boolean upgrade() {
-		this.level = level.nextLevel();
+		if(level < TownManagerConstants.MAX_BUILDING_LEVEL) {
+			this.level +=1 ;
+		}
 		return true;
 	}
+	
 	public abstract BuildingType getType();
 
-	public UpgradeLevel getUpgradeLevel() {
-		return level;
-	}
-
-	public Map<TownResource,Long> getUpgradeCosts(UpgradeLevel level) {
+	public Map<TownResource,Long> getUpgradeCosts(int level) {
 		if (upgradeTable.containsKey(level)) {
 			return upgradeTable.get(level);
 		}

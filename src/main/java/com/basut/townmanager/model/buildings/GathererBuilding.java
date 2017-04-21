@@ -26,9 +26,4 @@ public class GathererBuilding extends Building{
 		return BuildingType.GATHERER;
 	}
 
-	@Override
-	public boolean upgrade() {
-		this.level = level.nextLevel();
-		return true;
-	}
 }

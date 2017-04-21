@@ -65,7 +65,7 @@ public class TaskManager {
 		BuildingType type = workerTask.getBuildingAssignment().getType();
 		switch (type) {
 		case REPAIR:
-			buildingManager.restoreBuildings(workerTask.getBuildingAssignment().getLevel().getLevelValue(), minion);
+			buildingManager.restoreBuildings(workerTask.getBuildingAssignment().getLevel(), minion);
 			workerTask.setDuration(100);
 			break;
 		default:
@@ -205,7 +205,7 @@ public class TaskManager {
 	}
 
 	private void performGathererTask(GathererTask townTask, Minion minion) {
-		int levelOfBuilding = townTask.getBuildingAssignment().getUpgradeLevel().getLevelValue();
+		int levelOfBuilding = townTask.getBuildingAssignment().getLevel();
 		TownResource res = townTask.getBuildingAssignment().getProducedResource();
 		townManager.getTown().getStorage().addResource(res,
 				(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
