@@ -12,6 +12,5 @@ public class MinionTypeExtended {
 	private Race race;
 	private short levelUpFactor = 200;
 	private MinionTypeAttributes baseAttributes = MinionTypeAttributes.builder().build();
-	// private MinionTypeAttributes levelUpAttributes =
-	// MinionTypeAttributes.builder().build();
+	private MinionTypeAttributes maxLevelUpAttributes = MinionTypeAttributes.builder().build();
 }

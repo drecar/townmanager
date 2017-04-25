@@ -5,7 +5,18 @@
 	"baseAttributes":{
 		"maxHealth":100,
 		"maxMana" : 20,
-		"attackElements":{},
+		"attackElements":{
+			"COLD":"20"
+		},
+		"defenceElements":{},
+		"skills":{}
+	},
+	"maxLevelUpAttributes":{
+		"maxHealth":100,
+		"maxMana" : 20,
+		"attackElements":{
+			"COLD":"20"
+		},
 		"defenceElements":{},
 		"skills":{}
 	}

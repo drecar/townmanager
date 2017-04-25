@@ -8,5 +8,12 @@
 		"attackElements":{},
 		"defenceElements":{},
 		"skills":{}
+	},
+	"maxLevelAttributes":{
+		"maxHealth":100,
+		"maxMana" : 20,
+		"attackElements":{},
+		"defenceElements":{},
+		"skills":{}
 	}
 }
