@@ -1,0 +1,12 @@
+{
+	"name": "Medusa",
+	"race": "BEAST",
+	"levelUpFactor": 180,
+	"baseAttributes":{
+		"maxHealth":100,
+		"maxMana" : 20,
+		"attackElements":{},
+		"defenceElements":{},
+		"skills":{}
+	}
+}

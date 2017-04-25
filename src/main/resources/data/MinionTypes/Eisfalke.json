@@ -1,0 +1,12 @@
+{
+	"name":"Eisfalke",
+	"race": "BIRD",
+	"levelUpFactor":175,
+	"baseAttributes":{
+		"maxHealth":100,
+		"maxMana" : 20,
+		"attackElements":{},
+		"defenceElements":{},
+		"skills":{}
+	}
+}

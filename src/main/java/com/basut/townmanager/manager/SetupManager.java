@@ -1,17 +1,24 @@
 package com.basut.townmanager.manager;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Optional;
 
 import javax.annotation.PostConstruct;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.Dungeon;
 import com.basut.townmanager.model.Minion;
+import com.basut.townmanager.model.MinionTypeExtended;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.buildings.FireDepartment;
 import com.basut.townmanager.model.buildings.GathererBuilding;
@@ -28,10 +35,16 @@ import com.basut.townmanager.utility.enums.MinionType;
 import com.basut.townmanager.utility.enums.Profession;
 import com.basut.townmanager.utility.enums.Skill;
 import com.basut.townmanager.utility.enums.TownResource;
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.Lists;
 
 @Component
 public class SetupManager {
+
+	private static final Logger log = LoggerFactory.getLogger(SetupManager.class);
+
 	@Autowired
 	private TownManager townManager;
 
@@ -49,7 +62,42 @@ public class SetupManager {
 
 	@PostConstruct
 	public void initDatabase() {
+		createMinionType();
 		createMonsters();
+	}
+
+	private void createMinionType() {
+		File file = new File("src/main/resources/data/MinionTypes");
+		if (file.exists()) {
+			List<File> list = Arrays.asList(file.listFiles());
+			list.forEach(type -> handle(type));
+		} else {
+			log.error("Datei existiert nicht");
+		}
+
+	}
+
+	private void handle(File type) {
+		log.error("Dateiname: {}", type.getName());
+		ObjectMapper mapper = new ObjectMapper();
+		InputStream is = MinionTypeExtended.class.getResourceAsStream(type.getPath());
+		try {
+			MinionTypeExtended testObj = mapper.readValue(type, MinionTypeExtended.class);
+			log.error(testObj.getName());
+			log.error(String.valueOf(testObj.getLevelUpFactor()));
+			log.error(testObj.getRace().toString());
+
+		} catch (JsonParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (JsonMappingException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 	}
 
 	private void createMonsters() {
