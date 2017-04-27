@@ -1,23 +1,32 @@
 {
-	"name":"Eisfalke",
+	"name": "EISFALKE",
 	"race": "BIRD",
-	"levelUpFactor":175,
-	"baseAttributes":{
-		"maxHealth":100,
-		"maxMana" : 20,
-		"attackElements":{
-			"COLD":"20"
+	"levelUpFactor": 175,
+	"baseAttributes": {
+		"maxHealth": 100,
+		"maxMana": 20,
+		"attackElements": {
+			"COLD": 20
 		},
-		"defenceElements":{},
-		"skills":{}
+		"defenceElements": {
+			"COLD": 50
+		},
+		"skills": {
+			"MAGIC": 50
+		}
 	},
-	"maxLevelUpAttributes":{
-		"maxHealth":100,
-		"maxMana" : 20,
-		"attackElements":{
-			"COLD":"20"
+	"maxLevelUpAttributes": {
+		"maxHealth": 800,
+		"maxMana": 300,
+		"attackElements": {
+			"COLD": 200,
+			"WATER":10
 		},
-		"defenceElements":{},
-		"skills":{}
+		"defenceElements": {
+			"MAGIC": 150
+		},
+		"skills": {
+			"MAGIC": 100
+		}
 	}
 }

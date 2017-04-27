@@ -1,19 +1,33 @@
 {
-	"name": "Medusa",
+	"name": "MEDUSA",
 	"race": "BEAST",
 	"levelUpFactor": 180,
 	"baseAttributes":{
 		"maxHealth":100,
 		"maxMana" : 20,
-		"attackElements":{},
-		"defenceElements":{},
-		"skills":{}
+		"attackElements":{
+			"PHYSICAL":15,
+			"POISON":5
+		},
+		"defenceElements":{
+			"POISON":20
+		},
+		"skills":{
+			"CURSE":5
+		}
 	},
-	"maxLevelAttributes":{
-		"maxHealth":100,
-		"maxMana" : 20,
-		"attackElements":{},
-		"defenceElements":{},
-		"skills":{}
+	"maxLevelUpAttributes":{
+		"maxHealth":1000,
+		"maxMana" : 200,
+		"attackElements":{
+			"PHYSICAL":50,
+			"POISON":100
+		},
+		"defenceElements":{
+			"POISON":200
+		},
+		"skills":{
+			"CURSE":50
+		}
 	}
 }

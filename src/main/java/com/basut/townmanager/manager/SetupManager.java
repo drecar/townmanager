@@ -2,7 +2,6 @@ package com.basut.townmanager.manager;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
@@ -60,6 +59,9 @@ public class SetupManager {
 	@Autowired
 	IDungeonRepository dungeonRepository;
 
+	@Autowired
+	MinionManager minionManager;
+
 	@PostConstruct
 	public void initDatabase() {
 		createMinionType();
@@ -78,14 +80,11 @@ public class SetupManager {
 	}
 
 	private void handle(File type) {
-		log.error("Dateiname: {}", type.getName());
+		log.info("Dateiname: {}", type.getName());
 		ObjectMapper mapper = new ObjectMapper();
-		InputStream is = MinionTypeExtended.class.getResourceAsStream(type.getPath());
 		try {
-			MinionTypeExtended testObj = mapper.readValue(type, MinionTypeExtended.class);
-			log.error(testObj.getName());
-			log.error(String.valueOf(testObj.getLevelUpFactor()));
-			log.error(testObj.getRace().toString());
+			MinionTypeExtended minionType = mapper.readValue(type, MinionTypeExtended.class);
+			minionManager.getSpecies().add(minionType);
 
 		} catch (JsonParseException e) {
 			// TODO Auto-generated catch block

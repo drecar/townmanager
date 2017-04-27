@@ -1,7 +1,10 @@
 package com.basut.townmanager.manager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.slf4j.Logger;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Minion;
+import com.basut.townmanager.model.MinionTypeExtended;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.tasks.DungeonTask;
 import com.basut.townmanager.tasks.GathererTask;
@@ -17,11 +21,17 @@ import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.AttackType;
+import com.basut.townmanager.utility.enums.Skill;
+
+import lombok.Getter;
 
 @Component
 public class MinionManager {
 
 	private static final Logger log = LoggerFactory.getLogger(MinionManager.class);
+
+	@Getter
+	private List<MinionTypeExtended> species = new ArrayList<>();
 
 	@Autowired
 	private TownManager townManager;
@@ -62,6 +72,7 @@ public class MinionManager {
 			log.info("{} reached Level {}", minion.getName(), minion.getLevel());
 
 			// erhöhe Attribute etc
+			updateMinion(minion);
 		}
 	}
 
@@ -98,19 +109,75 @@ public class MinionManager {
 		damageForMinion.keySet().stream().forEach(key -> {
 			int damageOfType = (int) (damageForMinion.get(key) * minion.getDefenceValue(key));
 			dealDirectDamageMinion(minion, damageOfType);
-			log.info("Minion{} bekam {} {} Schaden. Remaining health: {}", minion.getName(), damageOfType, key,
+			log.debug("Minion {} bekam {} {} Schaden. Remaining health: {}", minion.getName(), damageOfType, key,
 					minion.getHealth());
 		});
 	}
 
 	public int getExpForNextLevel(Minion minion) {
 		int minionLevel = minion.getLevel();
-		int expForNextLevel = (minionLevel ^ 2 + minionLevel) * minion.getMinionType().getLevelUpFactor() / 2;
+		Optional<MinionTypeExtended> expMinionType = getMinionTypeExtended(minion);
+		int levelUpFactor = TownManagerConstants.DEFAULT_LEVEL_UP_FACTOR;
+		if (expMinionType.isPresent()) {
+			levelUpFactor = expMinionType.get().getLevelUpFactor();
+		}
+		int expForNextLevel = (minionLevel ^ 2 + minionLevel) * levelUpFactor / 2;
 
 		return expForNextLevel;
 	}
 
 	public void letMinionsAge() {
 		townManager.getTown().getMinions().forEach(minion -> minion.setAge(minion.getAge() + 1));
+
+	}
+
+	public Minion updateMinion(Minion minion) {
+
+		Optional<MinionTypeExtended> expMinionType = getMinionTypeExtended(minion);
+		if (expMinionType.isPresent()) {
+			MinionTypeExtended type = expMinionType.get();
+			double maxLevelFactor = minion.getLevel() / (double) TownManagerConstants.MAX_LEVEL;
+			int maxHealth = (int) (type.getBaseAttributes().getMaxHealth()
+					+ (type.getMaxLevelUpAttributes().getMaxHealth() * maxLevelFactor));
+			minion.setMaxHealth(maxHealth);
+
+			Map<AttackType, Integer> totalAttackElements = new HashMap<>();
+			addAttackToMap(type.getBaseAttributes().getAttackElements(), 1.0, totalAttackElements);
+			addAttackToMap(type.getMaxLevelUpAttributes().getAttackElements(), maxLevelFactor, totalAttackElements);
+
+			minion.setAttackElements(totalAttackElements);
+
+			Map<AttackType, Integer> totalDefenceElements = new HashMap<>();
+			addAttackToMap(type.getBaseAttributes().getDefenceElements(), 1.0, totalDefenceElements);
+			addAttackToMap(type.getMaxLevelUpAttributes().getDefenceElements(), maxLevelFactor, totalDefenceElements);
+
+			minion.setDefenceElements(totalDefenceElements);
+
+			Map<Skill, Integer> skills = new HashMap<>();
+
+			minion.setSkills(skills);
+		}
+		return minion;
+	}
+
+	private Map<AttackType, Integer> addAttackToMap(Map<AttackType, Integer> newAttackElement, double maxLevelFactor,
+			Map<AttackType, Integer> totalAttackElements) {
+		newAttackElement.keySet().forEach(key -> {
+			int element = 0;
+			if (totalAttackElements.keySet().contains(key)) {
+				element = totalAttackElements.get(key);
+				System.out.println("Get Base Attack value " + element);
+			}
+			int value = (int) (maxLevelFactor * (newAttackElement.get(key)) + element);
+			totalAttackElements.put(key, value);
+			System.out.println("Setting " + key + " to " + value);
+		});
+		return totalAttackElements;
+	}
+
+	private Optional<MinionTypeExtended> getMinionTypeExtended(Minion minion) {
+		Optional<MinionTypeExtended> expMinionType = species.stream()
+				.filter(minionTypeExp -> minionTypeExp.getName().equals(minion.getMinionType())).findFirst();
+		return expMinionType;
 	}
 }

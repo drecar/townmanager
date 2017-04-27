@@ -15,4 +15,5 @@ public class TownManagerConstants {
 	public static final int MAX_BUILDING_LEVEL = 10000;
 	public static final int GATHERING_EXP_FACTOR = 10;
 	public static final int DUNGEON_FIGHTING_EXP_FACTOR = 50;
+	public static final int DEFAULT_LEVEL_UP_FACTOR = 200;
 }
