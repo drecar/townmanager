@@ -153,11 +153,29 @@ public class MinionManager {
 
 			minion.setDefenceElements(totalDefenceElements);
 
-			Map<Skill, Integer> skills = new HashMap<>();
+			Map<Skill, Integer> totalSkills = new HashMap<>();
+			addSkillToMap(type.getBaseAttributes().getSkills(), 1.0, totalSkills);
+			addSkillToMap(type.getMaxLevelUpAttributes().getSkills(), maxLevelFactor, totalSkills);
 
-			minion.setSkills(skills);
+			minion.setSkills(totalSkills);
 		}
 		return minion;
+	}
+
+	private Map<Skill, Integer> addSkillToMap(Map<Skill, Integer> skills, double maxLevelFactor,
+			Map<Skill, Integer> totalSkills) {
+
+		skills.keySet().forEach(key -> {
+			int skill = 0;
+			if (totalSkills.keySet().contains(key)) {
+				skill = totalSkills.get(key);
+			}
+			int value = (int) (maxLevelFactor * (skills.get(key)) + skill);
+			totalSkills.put(key, value);
+
+		});
+		return totalSkills;
+
 	}
 
 	private Map<AttackType, Integer> addAttackToMap(Map<AttackType, Integer> newAttackElement, double maxLevelFactor,
