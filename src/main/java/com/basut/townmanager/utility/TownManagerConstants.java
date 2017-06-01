@@ -7,6 +7,7 @@ public class TownManagerConstants {
 	public static final String STONEMACON_HUT = "StoneMaconHut";
 	public static final String LUMBER_JACKS_HUT = "LumberjackyHut";
 	public static final String PARK = "Park";
+	public static final String TOWNHALL = "Townhall";
 	public static final int MAX_BUILDING_CONDITION = 100000;
 	public static final Long STORAGE_LIMIT = 100000L;
 	public static final String PORTAL = "Portal";
