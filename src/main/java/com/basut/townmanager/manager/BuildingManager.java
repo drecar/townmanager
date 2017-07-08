@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Minion;
+import com.basut.townmanager.model.Town;
 import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.TownResource;
@@ -17,8 +18,8 @@ public class BuildingManager {
 	@Autowired
 	TownManager townManager;
 
-	public void decayBuildings() {
-		townManager.getTown().getBuildings().forEach(building -> building.setZustand(building.getZustand() - 1));
+	public void decayBuildings(Town town) {
+		town.getBuildings().forEach(building -> building.setZustand(building.getZustand() - 1));
 	}
 
 	// public allowedBuildingList

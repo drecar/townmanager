@@ -1,9 +1,14 @@
 package com.basut.townmanager.manager;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.basut.townmanager.model.Town;
+import com.basut.townmanager.model.User;
 import com.basut.townmanager.model.buildings.Storage;
+import com.basut.townmanager.service.UserService;
 import com.basut.townmanager.utility.enums.TownResource;
 
 import lombok.Getter;
@@ -26,25 +31,34 @@ public class TickManager {
 	@Autowired
 	private TaskManager taskManager;
 
+	@Autowired
+	private UserService userService;
+	
 	public void tick() {
-		
-		calculateBasics();
+	
+		taskManager.prepareNextTick();
+		List<User> findAllUsers = userService.findAllUsers();
+		findAllUsers.forEach(user -> performTickForUser(user));
+	}
+	
+	private void performTickForUser(User user) {
+		calculateBasics(user.getTown());
 		
 		// Execute Tasks
-		taskManager.performTick();
+		taskManager.performTick(user.getTown());
 		
 		//destroy buildings
-		buildingManager.decayBuildings();
+		buildingManager.decayBuildings(user.getTown());
 		
 		// let the minions age
-		minionManager.letMinionsAge();
+		minionManager.letMinionsAge(user.getTown().getMinions());
 		
 		// save town
-		townManager.saveTown();
+		townManager.saveTown(user.getTown());
 	}
 
-	private void calculateBasics() {
-		Storage lager = townManager.getTown().getStorage();
+	private void calculateBasics(Town town) {
+		Storage lager = town.getStorage();
 		lager.addResource(TownResource.FOOD, 10L);
 		lager.addResource(TownResource.WOOD, 10L);
 		lager.addResource(TownResource.STONE, 10L);

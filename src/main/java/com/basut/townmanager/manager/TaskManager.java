@@ -15,6 +15,7 @@ import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Dungeon;
 import com.basut.townmanager.model.Minion;
+import com.basut.townmanager.model.Town;
 import com.basut.townmanager.tasks.DungeonTask;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
@@ -31,8 +32,6 @@ public class TaskManager {
 
 	private static final Logger log = LoggerFactory.getLogger(TaskManager.class);
 
-	@Autowired
-	private TownManager townManager;
 
 	@Autowired
 	private MinionManager minionManager;
@@ -44,17 +43,17 @@ public class TaskManager {
 
 	private Random random = new Random();
 
-	public void performTownTask(TownTask townTask, Minion minion) {
+	public void performTownTask(TownTask townTask, Minion minion, Town town) {
 		townTask.setDuration(townTask.getDuration() - 1);
 		if (townTask instanceof GathererTask) {
-			performGathererTask((GathererTask) townTask, minion);
+			performGathererTask((GathererTask) townTask, minion, town);
 		}
 		if (townTask instanceof IdleTask) {
 			minionManager.healMinion(minion, 10);
 			townTask.setDuration(100);
 		}
 		if (townTask instanceof DungeonTask) {
-			performDungeonTask((DungeonTask) townTask, minion);
+			performDungeonTask((DungeonTask) townTask, minion, town);
 		}
 		if (townTask instanceof WorkerTask) {
 			performWorkerTask((WorkerTask) townTask, minion);
@@ -73,7 +72,7 @@ public class TaskManager {
 		}
 	}
 
-	private void performDungeonTask(DungeonTask dungeonTask, Minion minion) {
+	private void performDungeonTask(DungeonTask dungeonTask, Minion minion, Town town) {
 		if (executedTask.contains(dungeonTask)) {
 			dungeonTask.setDuration(dungeonTask.getDuration() + 1);
 		} else {
@@ -95,11 +94,11 @@ public class TaskManager {
 						log.info("Gatheringevent");
 						int sumOfGatheringSkills = minionsFromTask.stream()
 								.mapToInt(min -> min.getSkillValue((Skill.GATHERING))).sum();
-						distributeResources(dungeonTask.getDungeon(), minionsFromTask, sumOfGatheringSkills);
+						distributeResources(dungeonTask.getDungeon(), minionsFromTask, sumOfGatheringSkills, town);
 
 					} else if (nextInt < 7500) {
 
-						fightevent(dungeonTask.getDungeon(), minionsFromTask);
+						fightevent(dungeonTask.getDungeon(), minionsFromTask, town);
 
 						sb.append("Fight!").append("\n");
 					} else if (nextInt < 8500) {
@@ -121,16 +120,16 @@ public class TaskManager {
 		}
 	}
 
-	private void distributeResources(Dungeon dungeon, List<Minion> minionsFromTask, int collectingFactor) {
+	private void distributeResources(Dungeon dungeon, List<Minion> minionsFromTask, int collectingFactor, Town town) {
 		List<TownResource> collectables = dungeon.getCollectables();
 		int numberOfCollectables = dungeon.getDifficulty() * collectingFactor;
 		int nextInt = Math.abs(random.nextInt());
-		townManager.getTown().getStorage().addResource(collectables.get(nextInt % collectables.size()),
+		town.getStorage().addResource(collectables.get(nextInt % collectables.size()),
 				(long) numberOfCollectables);
 		log.info("Adding {}{} to Storage", numberOfCollectables, collectables.get(nextInt % collectables.size()));
 	}
 
-	private void fightevent(Dungeon dungeon, List<Minion> minions) {
+	private void fightevent(Dungeon dungeon, List<Minion> minions, Town town) {
 		// Gegnergruppe generieren
 		Map<AttackType, Integer> damageFromEnemy = new HashMap<>();
 		final int totalDamage = (dungeon.getDifficulty() ^ 2 * 10) * (5000 + random.nextInt(10001)) / 10000;
@@ -180,8 +179,8 @@ public class TaskManager {
 			log.info("End of Round.");
 		}
 		if (teamRemains) {
-			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50);
-			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50);
+			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50, town);
+			distributeResources(dungeon, minions, dungeon.getDifficulty() * 50, town);
 			// exp&lvup
 
 			minions.stream().filter(minion -> minion.getHealth() > 0)
@@ -209,10 +208,10 @@ public class TaskManager {
 		minionManager.healMinion(minion, minion.getMaxHealth() / 10);
 	}
 
-	private void performGathererTask(GathererTask townTask, Minion minion) {
+	private void performGathererTask(GathererTask townTask, Minion minion, Town town) {
 		int levelOfBuilding = townTask.getBuildingAssignment().getLevel();
 		TownResource res = townTask.getBuildingAssignment().getProducedResource();
-		townManager.getTown().getStorage().addResource(res,
+		town.getStorage().addResource(res,
 				(long) (levelOfBuilding * minion.getSkillValue(Skill.GATHERING)));
 		townTask.setDuration(TownManagerConstants.ENDLESS_DURATION);
 		minionManager.distributeExpToMinion(minion, townTask.getBuildingAssignment().getLevel()
@@ -228,16 +227,16 @@ public class TaskManager {
 		minionsToSendToDungeon.forEach(minion -> minion.setTask(dungeonTask));
 	}
 
-	public void performTick() {
+	public void performTick(Town town) {
 		// perform tick
-		townManager.getTown().getMinions().stream().forEach(minion -> performTownTask(minion.getTask(), minion));
+		town.getMinions().stream().forEach(minion -> performTownTask(minion.getTask(), minion, town));
 
 		// put minion back to idle
-		List<Minion> minionsWithFinishedTasks = townManager.getTown().getMinions().stream()
+		List<Minion> minionsWithFinishedTasks = town.getMinions().stream()
 				.filter(minion -> minion.getTask().isFinished()).collect(Collectors.toList());
 		minionsWithFinishedTasks.forEach(minion -> minionManager.resetTask(minion));
-
-		// prepare next tick
+	}
+	public void prepareNextTick() {
 		executedTask.clear();
 	}
 }
