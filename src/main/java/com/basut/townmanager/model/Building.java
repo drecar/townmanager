@@ -44,8 +44,8 @@ public abstract class Building {
 	
 	@Transient
 	protected Map<Integer, Map<TownResource,Long>> upgradeTable = new HashMap<>();
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
-	protected Set<Minion> workers = new HashSet<>();
+//	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+//	protected Set<Minion> workers = new HashSet<>();
 
 	public boolean upgrade() {
 		if(level < TownManagerConstants.MAX_BUILDING_LEVEL) {

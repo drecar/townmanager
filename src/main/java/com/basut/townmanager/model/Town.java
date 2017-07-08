@@ -10,6 +10,9 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
+import org.hibernate.annotations.LazyCollection;
+import org.hibernate.annotations.LazyCollectionOption;
+
 import com.basut.townmanager.model.buildings.Storage;
 
 import lombok.Getter;
@@ -29,7 +32,11 @@ public class Town {
 	@OneToOne(cascade=CascadeType.ALL)
 	private Storage storage = new Storage();
 	@OneToMany(cascade=CascadeType.ALL)
+	@LazyCollection(LazyCollectionOption.FALSE)
 	private List<Building> buildings= new ArrayList<>();
 	@OneToMany(cascade=CascadeType.ALL)
-	private List<Minion> minions = new ArrayList<>();	
+	@LazyCollection(LazyCollectionOption.FALSE)
+	private List<Minion> minions = new ArrayList<>();
+	@OneToOne(cascade=CascadeType.ALL)
+	private User user;
 }

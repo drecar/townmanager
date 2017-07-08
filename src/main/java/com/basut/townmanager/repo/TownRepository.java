@@ -6,4 +6,6 @@ import com.basut.townmanager.model.Town;
 
 public interface TownRepository extends JpaRepository<Town, Long>{
 
+	Town findTownByUserId(int id);
+
 }

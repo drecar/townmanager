@@ -36,15 +36,10 @@ public class MinionManager {
 	@Autowired
 	private TownManager townManager;
 
-	public void initMonsters(Town town) {
-
-	}
-
 	public void resetTask(Minion minion) {
 		TownTask oldTask = minion.getTask();
 		if (oldTask instanceof GathererTask) {
 			GathererTask oldGathererTask = (GathererTask) oldTask;
-			oldGathererTask.getBuildingAssignment().getWorkers().remove(minion);
 		}
 		minion.setTask(new IdleTask());
 	}

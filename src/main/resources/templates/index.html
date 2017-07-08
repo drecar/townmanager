@@ -21,6 +21,11 @@
 			<h1>
 				<span th:text="'Welcome to ' + ${town.name}">town</span>
 			</h1>
+			<h1 th:inline="text">Hello
+				[[${#httpServletRequest.remoteUser}]]!</h1>
+			<form th:action="@{/logout}" method="post">
+				<input type="submit" value="Sign Out" />
+			</form>
 
 			<div class="container">
 				<h2>Storage</h2>
@@ -63,7 +68,8 @@
 							<td th:text="${building.name}">John</td>
 							<td th:text="${building.level}">John</td>
 							<td th:text="${building.zustand}">John</td>
-							<td th:text="${@buildingManager.getBuildingCosts(building.name, building.level)}">John</td>
+							<td
+								th:text="${@buildingManager.getBuildingCosts(building.name, building.level)}">John</td>
 							<td>
 								<form class="form-inline" action="#"
 									th:action="@{/building/upgrade/{path}(path=${building.id})}"

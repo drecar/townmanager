@@ -1,11 +1,14 @@
 package com.basut.townmanager.model.buildings;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
 import javax.persistence.DiscriminatorValue;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 
 import com.basut.townmanager.model.Building;
 import com.basut.townmanager.utility.enums.BuildingName;
@@ -16,7 +19,8 @@ import com.basut.townmanager.utility.enums.TownResource;
 @DiscriminatorValue("Storage")
 public class Storage extends Building {
 	
-	private HashMap<TownResource, Long> resourcesInStorage= new HashMap<>();
+	@ElementCollection(fetch = FetchType.EAGER)
+	private Map<TownResource, Long> resourcesInStorage= new HashMap<>();
 
 	public Storage() {
 		name =BuildingName.STORAGE;

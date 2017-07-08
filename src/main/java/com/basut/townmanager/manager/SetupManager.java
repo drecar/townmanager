@@ -54,13 +54,13 @@ public class SetupManager {
 	MinionRepository minionRepository;
 
 	@Autowired
-	TownRepository townRepository;
-
-	@Autowired
 	IDungeonRepository dungeonRepository;
 
 	@Autowired
 	MinionManager minionManager;
+	
+	@Autowired
+	TownRepository townRepository;
 
 	@PostConstruct
 	public void initDatabase() {
@@ -76,7 +76,6 @@ public class SetupManager {
 		} else {
 			log.error("Datei existiert nicht");
 		}
-
 	}
 
 	private void handle(File type) {
@@ -100,16 +99,18 @@ public class SetupManager {
 	}
 
 	private void createMonsters() {
-		cheatBasicBuildings();
-		cheatDungeons();
-		cheatWorker();
+		townRepository.count();
+		// Monster werden nur erzeugt, wenn es noch keine Stadt gibt. 
+		if (townRepository.count() <1) {
+			cheatBasicBuildings();
+			cheatDungeons();
+			cheatWorker();
+		}
 
-		List<Minion> minions = minionRepository.findAll();
-		townManager.getTown().setMinions(minions);
 	}
 
 	public void cheatWorker() {
-		Town town = townManager.getTown();
+		Town town = townRepository.findAll().get(0);
 
 		HashMap<Skill, Integer> basicSkill = new HashMap<>();
 		basicSkill.put(Skill.CURSE, 2);
@@ -166,11 +167,11 @@ public class SetupManager {
 		town.getMinions().add(cassiopeia);
 		town.getMinions().add(merlin);
 		town.getMinions().add(medusa);
-		minionRepository.save(townManager.getTown().getMinions());
+		townRepository.save(town);
 	}
 
 	public void cheatBasicBuildings() {
-		Town town = townManager.getTown();
+		Town town = new Town();
 
 		GathererBuilding huntingHut = new GathererBuilding();
 		huntingHut.setProducedResource(TownResource.FOOD);
@@ -210,7 +211,7 @@ public class SetupManager {
 		town.getBuildings().add(fireDepartment);
 		town.getBuildings().add(portal);
 
-		buildingRepository.save(town.getBuildings());
+		townRepository.save(town);
 	}
 
 	public void cheatDungeons() {

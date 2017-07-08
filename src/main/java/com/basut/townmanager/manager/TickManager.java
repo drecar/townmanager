@@ -38,6 +38,9 @@ public class TickManager {
 		
 		// let the minions age
 		minionManager.letMinionsAge();
+		
+		// save town
+		townManager.saveTown();
 	}
 
 	private void calculateBasics() {
