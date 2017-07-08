@@ -140,7 +140,7 @@ public class TownManager {
 		return town.getBuildings().stream().filter(building -> buildingTypesToWorkAt.contains(building.getType())).collect(Collectors.toList());
 	}
 
-	public void saveTown() {
+	public void saveTown(Town town) {
 		townRepository.save(town);
 	}
 	

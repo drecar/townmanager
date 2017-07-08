@@ -14,7 +14,6 @@ import org.springframework.stereotype.Component;
 
 import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.MinionTypeExtended;
-import com.basut.townmanager.model.Town;
 import com.basut.townmanager.tasks.DungeonTask;
 import com.basut.townmanager.tasks.GathererTask;
 import com.basut.townmanager.tasks.IdleTask;
@@ -121,8 +120,8 @@ public class MinionManager {
 		return expForNextLevel;
 	}
 
-	public void letMinionsAge() {
-		townManager.getTown().getMinions().forEach(minion -> minion.setAge(minion.getAge() + 1));
+	public void letMinionsAge(List<Minion> minions) {
+		minions.forEach(minion -> minion.setAge(minion.getAge() + 1));
 
 	}
 
