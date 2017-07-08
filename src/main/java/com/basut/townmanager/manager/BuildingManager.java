@@ -1,13 +1,20 @@
 package com.basut.townmanager.manager;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.basut.townmanager.model.Building;
 import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
+import com.basut.townmanager.model.buildings.FireDepartment;
+import com.basut.townmanager.model.buildings.GathererBuilding;
+import com.basut.townmanager.model.buildings.Park;
 import com.basut.townmanager.utility.TownManagerConstants;
 import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.TownResource;
@@ -76,6 +83,8 @@ public class BuildingManager {
 	public boolean checkBuildingRequirements(BuildingName name) {
 		Map<BuildingName, Integer> requirements = new HashMap<>();
 		switch (name) {
+		case TOWNHALL:
+			requirements.put(BuildingName.TOWNHALL, 0);
 		case FIRE_DEPARTMENT:
 			requirements.put(BuildingName.TOWNHALL, 1);
 			requirements.put(BuildingName.LUMBERJACKS_HUT, 3);
@@ -105,6 +114,55 @@ public class BuildingManager {
 			return false;
 		}
 		return true;
+	}
+
+	public List<Building> getBuildingsToBuild() {
+
+		Town town = townManager.getTown();
+		BuildingName[] allBuildings = BuildingName.values();
+		List<BuildingName> upgradableBuildings = Arrays.asList(allBuildings);
+		List<BuildingName> buildableBuildings = upgradableBuildings.stream()
+				.filter(value -> checkBuildingRequirements(value) == true).collect(Collectors.toList());
+
+		List<BuildingName> buildingsBuild = town.getBuildings().stream().map(building -> building.getName())
+				.collect(Collectors.toList());
+		buildableBuildings.stream().filter(name -> !buildingsBuild.contains(name))
+				.forEach(name -> restoreBuildingFromName(name, town));
+
+		townManager.saveTown(town);
+		return town.getBuildings();
+
+	}
+
+	private void restoreBuildingFromName(BuildingName name, Town town) {
+
+		Building building;
+		switch (name) {
+		case FIRE_DEPARTMENT:
+			town.getBuildings().add(new FireDepartment());
+			break;
+		case HUNTING_HUT:
+			town.getBuildings().add(new GathererBuilding(name, TownResource.FOOD));
+			break;
+		case LUMBERJACKS_HUT:
+			town.getBuildings().add(new GathererBuilding(name, TownResource.WOOD));
+			break;
+		case PARK:
+			town.getBuildings().add(new Park());
+			break;
+		case STONEMACONS_HUT:
+			town.getBuildings().add(new GathererBuilding(name, TownResource.STONE));
+			break;
+		// case STORAGE:
+		// town.getBuildings().add(new Storage());
+		// break;
+		// case TOWNHALL:
+		// town.getBuildings().add(new Townhall());
+		// break;
+		default:
+			break;
+
+		}
 	}
 
 	/**

@@ -64,7 +64,7 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr th:each="building: ${town.buildings}">
+						<tr th:each="building: ${@buildingManager.getBuildingsToBuild()}">
 							<td th:text="${building.name}">John</td>
 							<td th:text="${building.level}">John</td>
 							<td th:text="${building.zustand}">John</td>

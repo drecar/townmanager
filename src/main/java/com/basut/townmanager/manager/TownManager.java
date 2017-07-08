@@ -20,7 +20,7 @@ import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.User;
 import com.basut.townmanager.model.buildings.GathererBuilding;
-import com.basut.townmanager.model.buildings.TownBuilding;
+import com.basut.townmanager.model.buildings.Townhall;
 import com.basut.townmanager.repo.TownRepository;
 import com.basut.townmanager.service.UserService;
 import com.basut.townmanager.tasks.GathererTask;
@@ -99,7 +99,9 @@ public class TownManager {
 			newTown.setName(user.getName());
 			
 						
-			TownBuilding townhall = new TownBuilding();
+			
+			
+			Building townhall = new Townhall();
 			townhall.setName(BuildingName.TOWNHALL);
 			townhall.upgrade();
 			newTown.getBuildings().add(townhall);
