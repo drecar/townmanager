@@ -17,6 +17,7 @@ import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.utility.enums.AttackType;
 import com.basut.townmanager.utility.enums.MinionType;
 import com.basut.townmanager.utility.enums.Profession;
+import com.basut.townmanager.utility.enums.Race;
 import com.basut.townmanager.utility.enums.Skill;
 
 import lombok.AllArgsConstructor;
@@ -70,6 +71,9 @@ public class Minion {
 
 	@Column
 	private Profession profession;
+	
+	@Column
+	private Race race;
 
 	@Column
 	@Builder.Default

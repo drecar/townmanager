@@ -4,6 +4,6 @@ import lombok.Getter;
 
 @Getter
 public enum MinionType {
-	EISFALKE(), MEDUSA(), SORCERER();
+	EISFALKE(), MEDUSA(), SORCERER(), MINION();
 
 }

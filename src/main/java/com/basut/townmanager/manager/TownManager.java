@@ -1,5 +1,6 @@
 package com.basut.townmanager.manager;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -19,6 +20,7 @@ import com.basut.townmanager.model.Minion;
 import com.basut.townmanager.model.Town;
 import com.basut.townmanager.model.User;
 import com.basut.townmanager.model.buildings.GathererBuilding;
+import com.basut.townmanager.model.buildings.TownBuilding;
 import com.basut.townmanager.repo.TownRepository;
 import com.basut.townmanager.service.UserService;
 import com.basut.townmanager.tasks.GathererTask;
@@ -26,7 +28,13 @@ import com.basut.townmanager.tasks.IdleTask;
 import com.basut.townmanager.tasks.TownTask;
 import com.basut.townmanager.tasks.WorkerTask;
 import com.basut.townmanager.utility.TownManagerConstants;
+import com.basut.townmanager.utility.enums.AttackType;
+import com.basut.townmanager.utility.enums.BuildingName;
 import com.basut.townmanager.utility.enums.BuildingType;
+import com.basut.townmanager.utility.enums.MinionType;
+import com.basut.townmanager.utility.enums.Profession;
+import com.basut.townmanager.utility.enums.Race;
+import com.basut.townmanager.utility.enums.Skill;
 import com.basut.townmanager.utility.enums.TownResource;
 import com.google.common.collect.Lists;
 
@@ -81,11 +89,44 @@ public class TownManager {
 		if(auth == null) {
 			return this.town;
 		}
+		
+		//Neuer User bekommt Stadt
 		User user = userService.findUserByEmail(auth.getName());
 		if(user.getTown() == null) {
 			Town newTown = new Town();
+			
+			
+			newTown.setName(user.getName());
+			
+						
+			TownBuilding townhall = new TownBuilding();
+			townhall.setName(BuildingName.TOWNHALL);
+			townhall.upgrade();
+			newTown.getBuildings().add(townhall);
+			
+			HashMap<Skill, Integer> basicSkill = new HashMap<>();
+			basicSkill.put(Skill.STRENGTH, 5);
+			basicSkill.put(Skill.GATHERING, 1);
+			
+			HashMap<AttackType, Integer> starterAttackElement = new HashMap<>();
+			starterAttackElement.put(AttackType.PHYSICAL, 25);
+			
+			HashMap<AttackType, Integer> starterDefenceElement = new HashMap<>();
+			starterDefenceElement.put(AttackType.PHYSICAL, 100);
+			starterDefenceElement.put(AttackType.MAGIC, -10);
+			
+			Minion starter = Minion.builder().name("Worker").minionType(MinionType.MEDUSA).profession(Profession.GATHERER).race(Race.HUMAN)
+					.skills(basicSkill).attackElements(starterAttackElement).defenceElements(starterDefenceElement).build();
+			newTown.getMinions().add(starter);
+			
+			newTown.getStorage().addResource(TownResource.FOOD, 1000L);
+			newTown.getStorage().addResource(TownResource.WOOD, 1000L);
+			newTown.getStorage().addResource(TownResource.STONE, 1000L);
+			
 			user.setTown(newTown);
 			userService.saveUser(user);
+
+			
 		}
 		return user.getTown();
 	}
